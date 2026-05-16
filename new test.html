@@ -1,0 +1,2053 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>RC Bay — Buy & Sell RC Products</title>
+<link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=DM+Sans:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;600&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="style.css">
+</head>
+
+
+<style>
+/* ============================================================
+   RC BAY — style.css
+   Full stylesheet — extracted + enhanced from ttt.html
+   NEW: Auth modal, Mobile hamburger menu, Currency fixes
+   ============================================================ */
+
+/* ===== RESET & VARIABLES ===== */
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+:root{
+  --red:#E8001D;
+  --red-dark:#b8001a;
+  --navy:#0A0F1E;
+  --navy-mid:#111827;
+  --navy-light:#1C2539;
+  --steel:#2A3348;
+  --border:#2E3A52;
+  --text:#F0F4FF;
+  --muted:#7E8BA3;
+  --white:#FFFFFF;
+  --green:#00C46A;
+  --orange:#FF7A00;
+  --gold:#FFB800;
+  --font-display:'Bebas Neue',sans-serif;
+  --font-body:'DM Sans',sans-serif;
+  --font-mono:'JetBrains Mono',monospace;
+  --radius:10px;
+  --shadow:0 4px 24px rgba(0,0,0,.45);
+}
+html{scroll-behavior:smooth}
+body{font-family:var(--font-body);background:var(--navy);color:var(--text);min-height:100vh;overflow-x:hidden}
+a{color:inherit;text-decoration:none}
+button{cursor:pointer;font-family:var(--font-body)}
+img{max-width:100%}
+input,select,textarea{font-family:var(--font-body)}
+
+/* ===== UTILITY ===== */
+.hidden{display:none!important}
+.flex{display:flex}
+.flex-col{flex-direction:column}
+.items-center{align-items:center}
+.justify-between{justify-content:space-between}
+.gap-1{gap:.5rem}.gap-2{gap:1rem}.gap-3{gap:1.5rem}.gap-4{gap:2rem}
+.w-full{width:100%}
+.text-red{color:var(--red)}
+.text-green{color:var(--green)}
+.text-muted{color:var(--muted)}
+.text-sm{font-size:.85rem}
+.text-xs{font-size:.75rem}
+.text-lg{font-size:1.2rem}
+.text-xl{font-size:1.5rem}
+.text-2xl{font-size:2rem}
+.fw-600{font-weight:600}
+.fw-700{font-weight:700}
+.mt-1{margin-top:.5rem}.mt-2{margin-top:1rem}.mt-3{margin-top:1.5rem}.mt-4{margin-top:2rem}
+.mb-1{margin-bottom:.5rem}.mb-2{margin-bottom:1rem}.mb-3{margin-bottom:1.5rem}
+.p-2{padding:1rem}.p-3{padding:1.5rem}.p-4{padding:2rem}
+.badge{display:inline-block;padding:.2rem .7rem;border-radius:50px;font-size:.72rem;font-weight:700;letter-spacing:.05em;text-transform:uppercase}
+.badge-red{background:var(--red);color:#fff}
+.badge-green{background:var(--green);color:#fff}
+.badge-gold{background:var(--gold);color:#111}
+.badge-gray{background:var(--steel);color:var(--muted)}
+.container{max-width:1240px;margin:0 auto;padding:0 1.5rem}
+.section{padding:3rem 0}
+
+/* ===== BUTTONS ===== */
+.btn{display:inline-flex;align-items:center;gap:.5rem;padding:.65rem 1.4rem;border-radius:var(--radius);font-weight:600;font-size:.92rem;border:none;transition:all .2s}
+.btn-primary{background:var(--red);color:#fff}
+.btn-primary:hover{background:var(--red-dark);transform:translateY(-1px)}
+.btn-outline{background:transparent;border:2px solid var(--border);color:var(--text)}
+.btn-outline:hover{border-color:var(--red);color:var(--red)}
+.btn-ghost{background:transparent;color:var(--muted)}
+.btn-ghost:hover{color:var(--text)}
+.btn-green{background:var(--green);color:#fff}
+.btn-green:hover{opacity:.9}
+.btn-lg{padding:.85rem 2rem;font-size:1rem}
+.btn-sm{padding:.4rem .9rem;font-size:.8rem}
+
+/* ===== HEADER / NAV ===== */
+#header{position:sticky;top:0;z-index:999;background:var(--navy-mid);border-bottom:1px solid var(--border)}
+.header-inner{display:flex;align-items:center;gap:1.5rem;height:64px}
+.logo{display:flex;align-items:center;gap:.5rem;font-family:var(--font-display);font-size:2rem;letter-spacing:.04em;color:var(--white)}
+.logo-dot{color:var(--red)}
+.logo-badge{font-size:.55rem;font-family:var(--font-mono);background:var(--red);color:#fff;padding:.15rem .4rem;border-radius:4px;align-self:flex-start;margin-top:.35rem}
+.nav-links{display:flex;align-items:center;gap:.2rem;flex:1}
+.nav-link{padding:.45rem .85rem;border-radius:8px;font-size:.88rem;font-weight:500;color:var(--muted);transition:all .2s;position:relative}
+.nav-link:hover,.nav-link.active{color:var(--text);background:var(--navy-light)}
+.nav-link.active::after{content:'';position:absolute;bottom:-1px;left:50%;transform:translateX(-50%);width:20px;height:2px;background:var(--red);border-radius:2px}
+.header-actions{display:flex;align-items:center;gap:.75rem;margin-left:auto}
+.currency-pill{display:flex;align-items:center;gap:.4rem;padding:.3rem .75rem;border-radius:50px;background:var(--navy-light);border:1px solid var(--border);font-size:.8rem;font-weight:600;color:var(--gold)}
+.user-avatar{width:36px;height:36px;border-radius:50%;background:var(--red);display:flex;align-items:center;justify-content:center;font-weight:700;font-size:.85rem;cursor:pointer}
+
+/* ===== HAMBURGER / MOBILE NAV ===== */
+/* NEW: Mobile menu button — hidden on desktop */
+.hamburger{display:none;flex-direction:column;gap:5px;cursor:pointer;padding:.4rem;border-radius:8px;transition:background .2s;margin-left:auto}
+.hamburger:hover{background:var(--navy-light)}
+.hamburger span{display:block;width:22px;height:2px;background:var(--text);border-radius:2px;transition:all .3s}
+.hamburger.open span:nth-child(1){transform:translateY(7px) rotate(45deg)}
+.hamburger.open span:nth-child(2){opacity:0}
+.hamburger.open span:nth-child(3){transform:translateY(-7px) rotate(-45deg)}
+
+/* ===== MEGA MENU ===== */
+.mega-trigger{position:relative}
+.mega-trigger:hover .mega-panel{display:flex}
+.mega-panel{display:none;position:absolute;top:100%;left:-20px;width:680px;background:var(--navy-mid);border:1px solid var(--border);border-top:none;border-radius:0 0 var(--radius) var(--radius);box-shadow:var(--shadow);padding:1.5rem;gap:1rem}
+.mega-col{flex:1}
+.mega-col h4{font-size:.72rem;letter-spacing:.1em;text-transform:uppercase;color:var(--muted);margin-bottom:.75rem;font-weight:700}
+.mega-item{display:flex;align-items:center;gap:.6rem;padding:.5rem .6rem;border-radius:8px;font-size:.9rem;font-weight:500;transition:all .15s;cursor:pointer}
+.mega-item:hover{background:var(--navy-light);color:var(--red)}
+.mega-icon{width:28px;height:28px;border-radius:6px;background:var(--steel);display:flex;align-items:center;justify-content:center;font-size:1rem}
+.mega-item.featured{background:linear-gradient(135deg,rgba(232,0,29,.1),transparent);border:1px solid rgba(232,0,29,.2)}
+.mega-item.featured:hover{background:linear-gradient(135deg,rgba(232,0,29,.2),transparent)}
+
+/* ===== PAGE SYSTEM ===== */
+.page{display:none}
+.page.active{display:block}
+
+/* ===== HERO ===== */
+.hero{background:linear-gradient(135deg,var(--navy-mid) 0%,var(--navy-light) 60%,rgba(232,0,29,.08) 100%);border-bottom:1px solid var(--border);padding:4rem 0 3rem;position:relative;overflow:hidden}
+.hero::before{content:'RC';position:absolute;right:-2rem;top:-1rem;font-family:var(--font-display);font-size:18rem;color:rgba(232,0,29,.04);pointer-events:none;line-height:1}
+.hero-inner{display:grid;grid-template-columns:1fr 1fr;gap:3rem;align-items:center}
+.hero-tag{display:inline-flex;align-items:center;gap:.4rem;background:rgba(232,0,29,.12);border:1px solid rgba(232,0,29,.3);border-radius:50px;padding:.25rem .75rem .25rem .4rem;font-size:.75rem;font-weight:700;color:var(--red);text-transform:uppercase;letter-spacing:.06em;margin-bottom:1.25rem}
+.hero-tag-dot{width:6px;height:6px;border-radius:50%;background:var(--red);animation:pulse 1.5s infinite}
+@keyframes pulse{0%,100%{opacity:1;transform:scale(1)}50%{opacity:.5;transform:scale(.8)}}
+.hero h1{font-family:var(--font-display);font-size:4.5rem;line-height:.95;letter-spacing:.02em;color:var(--white);margin-bottom:1.25rem}
+.hero h1 span{color:var(--red)}
+.hero p{color:var(--muted);font-size:1.05rem;line-height:1.6;margin-bottom:2rem;max-width:460px}
+.hero-actions{display:flex;gap:1rem;align-items:center}
+.hero-stat{text-align:center}
+.hero-stat .num{font-family:var(--font-display);font-size:2.2rem;color:var(--white)}
+.hero-stat .lbl{font-size:.75rem;color:var(--muted);text-transform:uppercase;letter-spacing:.08em}
+.hero-stats{display:flex;gap:2.5rem;margin-top:2.5rem;padding-top:2rem;border-top:1px solid var(--border)}
+.hero-visual{position:relative}
+.hero-card-stack{position:relative;height:360px}
+.float-card{position:absolute;background:var(--navy-light);border:1px solid var(--border);border-radius:var(--radius);padding:1rem;box-shadow:var(--shadow)}
+.float-card.main{width:320px;right:0;top:0;z-index:2}
+.float-card.secondary{width:260px;right:60px;top:180px;z-index:1;opacity:.85}
+.listing-thumb{width:100%;height:150px;border-radius:8px;background:linear-gradient(135deg,var(--steel),var(--navy-light));display:flex;align-items:center;justify-content:center;font-size:3rem;margin-bottom:.75rem}
+.listing-title{font-weight:600;font-size:.9rem;margin-bottom:.3rem}
+.listing-price{font-family:var(--font-display);font-size:1.6rem;color:var(--red)}
+.listing-meta{display:flex;gap:.5rem;margin-top:.5rem;flex-wrap:wrap}
+
+/* ===== SEARCH BAR ===== */
+.search-bar{background:var(--navy-light);border:1px solid var(--border);border-radius:var(--radius);padding:1.25rem;display:flex;gap:.75rem;align-items:center;flex-wrap:wrap}
+.search-bar select,.search-bar input{background:var(--steel);border:1px solid var(--border);border-radius:8px;padding:.6rem .9rem;color:var(--text);font-size:.9rem;outline:none}
+.search-bar select:focus,.search-bar input:focus{border-color:var(--red)}
+.search-bar input{flex:1;min-width:160px}
+
+/* ===== LISTINGS GRID ===== */
+.listings-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(280px,1fr));gap:1.25rem}
+.listing-card{background:var(--navy-light);border:1px solid var(--border);border-radius:var(--radius);overflow:hidden;transition:all .2s;cursor:pointer}
+.listing-card:hover{border-color:rgba(232,0,29,.4);transform:translateY(-3px);box-shadow:0 8px 32px rgba(232,0,29,.12)}
+.listing-card-img{height:180px;background:var(--steel);display:flex;align-items:center;justify-content:center;font-size:3.5rem;position:relative;overflow:hidden}
+.listing-card-img-bg{position:absolute;inset:0;opacity:.3;background:radial-gradient(ellipse at center,var(--red) 0%,transparent 70%)}
+.listing-card-body{padding:1rem}
+.listing-card-title{font-weight:600;font-size:.92rem;margin-bottom:.4rem}
+.listing-card-price{font-family:var(--font-display);font-size:1.7rem;color:var(--red);margin-bottom:.5rem}
+.listing-card-footer{display:flex;justify-content:space-between;align-items:center;padding:.75rem 1rem;border-top:1px solid var(--border);background:rgba(0,0,0,.15)}
+.loc-tag{display:flex;align-items:center;gap:.3rem;font-size:.75rem;color:var(--muted)}
+
+/* ===== CATEGORY PAGE ===== */
+.category-hero{background:linear-gradient(180deg,var(--navy-mid),var(--navy));padding:2.5rem 0 0;border-bottom:1px solid var(--border)}
+.cat-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:1rem;margin-top:2rem}
+.cat-card{background:var(--navy-light);border:1px solid var(--border);border-radius:var(--radius);padding:1.5rem;display:flex;flex-direction:column;align-items:center;gap:.75rem;text-align:center;cursor:pointer;transition:all .2s}
+.cat-card:hover{border-color:var(--red);background:rgba(232,0,29,.05)}
+.cat-card .icon{font-size:2.5rem;width:64px;height:64px;border-radius:12px;background:var(--steel);display:flex;align-items:center;justify-content:center}
+.cat-card .name{font-weight:700;font-size:.95rem}
+.cat-card .count{font-size:.75rem;color:var(--muted)}
+.cat-card .subs{display:flex;flex-wrap:wrap;gap:.3rem;justify-content:center;margin-top:.25rem}
+.cat-card .sub-tag{font-size:.65rem;background:var(--steel);border-radius:50px;padding:.15rem .5rem;color:var(--muted)}
+
+/* ===== CREATE ADVERT FORM ===== */
+.advert-form{background:var(--navy-light);border:1px solid var(--border);border-radius:var(--radius);padding:2rem}
+.form-section{margin-bottom:2rem;padding-bottom:2rem;border-bottom:1px solid var(--border)}
+.form-section:last-child{border-bottom:none;margin-bottom:0;padding-bottom:0}
+.form-section-title{font-family:var(--font-display);font-size:1.3rem;color:var(--white);margin-bottom:1.25rem;display:flex;align-items:center;gap:.6rem}
+.form-section-title span{width:28px;height:28px;border-radius:50%;background:var(--red);display:flex;align-items:center;justify-content:center;font-size:.8rem;font-weight:700}
+.form-row{display:grid;grid-template-columns:1fr 1fr;gap:1rem;margin-bottom:1rem}
+.form-group{display:flex;flex-direction:column;gap:.4rem;margin-bottom:1rem}
+.form-group label{font-size:.82rem;font-weight:600;color:var(--muted);text-transform:uppercase;letter-spacing:.05em}
+.form-group input,.form-group select,.form-group textarea{background:var(--steel);border:1px solid var(--border);border-radius:8px;padding:.7rem 1rem;color:var(--text);font-size:.92rem;outline:none;transition:border .2s}
+.form-group input:focus,.form-group select:focus,.form-group textarea:focus{border-color:var(--red)}
+.form-group select option{background:var(--navy-mid)}
+.form-group textarea{resize:vertical;min-height:100px}
+/* NEW: error state for validation */
+.form-group input.error,.form-group select.error,.form-group textarea.error{border-color:var(--red);box-shadow:0 0 0 2px rgba(232,0,29,.15)}
+.char-count{font-size:.75rem;color:var(--muted);text-align:right;margin-top:.25rem}
+.char-count.warn{color:var(--orange)}
+.char-count.over{color:var(--red)}
+.photo-upload{border:2px dashed var(--border);border-radius:var(--radius);padding:2rem;text-align:center;cursor:pointer;transition:all .2s}
+.photo-upload:hover{border-color:var(--red);background:rgba(232,0,29,.03)}
+.photo-grid{display:grid;grid-template-columns:repeat(5,1fr);gap:.5rem;margin-top:1rem}
+.photo-slot{aspect-ratio:1;background:var(--steel);border-radius:8px;border:1px dashed var(--border);display:flex;align-items:center;justify-content:center;font-size:1.5rem;cursor:pointer;transition:all .2s}
+.photo-slot:hover{border-color:var(--red)}
+.photo-slot.filled{background:var(--navy-mid);border-style:solid;border-color:var(--border);font-size:.75rem}
+
+/* ===== MODALS (Payment, Message, Sold, Auth) ===== */
+.modal-overlay{position:fixed;inset:0;background:rgba(0,0,0,.7);z-index:2000;display:flex;align-items:center;justify-content:center;backdrop-filter:blur(4px)}
+.modal-box{background:var(--navy-mid);border:1px solid var(--border);border-radius:16px;padding:2.5rem;max-width:480px;width:90%;box-shadow:var(--shadow)}
+.modal-box h2{font-family:var(--font-display);font-size:2rem;margin-bottom:.5rem}
+.price-breakdown{background:var(--navy-light);border-radius:var(--radius);padding:1.25rem;margin:1.25rem 0}
+.price-row{display:flex;justify-content:space-between;align-items:center;padding:.5rem 0;font-size:.9rem}
+.price-row:not(:last-child){border-bottom:1px solid var(--border)}
+.price-total{font-family:var(--font-display);font-size:1.5rem;color:var(--red)}
+.payment-methods{display:flex;gap:.75rem;margin:1rem 0}
+.pay-method{flex:1;background:var(--steel);border:2px solid var(--border);border-radius:8px;padding:.75rem;text-align:center;cursor:pointer;font-size:.85rem;font-weight:600;transition:all .2s}
+.pay-method:hover,.pay-method.selected{border-color:var(--red);color:var(--red)}
+
+/* NEW: Auth Modal (Login / Register) ===== */
+.auth-tabs{display:flex;background:var(--navy-light);border-radius:8px;padding:.25rem;gap:.25rem;margin-bottom:1.5rem}
+.auth-tab{flex:1;padding:.55rem;text-align:center;border-radius:6px;font-weight:600;font-size:.9rem;cursor:pointer;color:var(--muted);transition:all .2s}
+.auth-tab.active{background:var(--red);color:#fff}
+.auth-panel{display:none}
+.auth-panel.active{display:block}
+.auth-divider{display:flex;align-items:center;gap:.75rem;margin:1rem 0;font-size:.78rem;color:var(--muted)}
+.auth-divider::before,.auth-divider::after{content:'';flex:1;height:1px;background:var(--border)}
+.social-btn{width:100%;padding:.65rem;background:var(--steel);border:1px solid var(--border);border-radius:8px;color:var(--text);font-size:.88rem;font-weight:600;cursor:pointer;display:flex;align-items:center;justify-content:center;gap:.6rem;transition:all .2s;margin-bottom:.5rem}
+.social-btn:hover{border-color:var(--red)}
+.auth-terms{font-size:.72rem;color:var(--muted);text-align:center;margin-top:.75rem;line-height:1.5}
+.auth-terms a{color:var(--red)}
+
+/* ===== ADVERT VIEW PAGE ===== */
+.advert-view{display:grid;grid-template-columns:1fr 360px;gap:1.5rem;align-items:start}
+.advert-gallery{background:var(--navy-light);border:1px solid var(--border);border-radius:var(--radius);overflow:hidden}
+.advert-main-img{width:100%;height:320px;background:var(--steel);display:flex;align-items:center;justify-content:center;font-size:6rem;position:relative}
+.advert-thumbs{display:flex;gap:.5rem;padding:.75rem}
+.advert-thumb{width:72px;height:56px;border-radius:6px;background:var(--steel);display:flex;align-items:center;justify-content:center;font-size:1.4rem;cursor:pointer;border:2px solid transparent;transition:all .2s;flex-shrink:0}
+.advert-thumb:hover,.advert-thumb.active{border-color:var(--red)}
+.advert-details{background:var(--navy-light);border:1px solid var(--border);border-radius:var(--radius);padding:1.5rem;margin-top:1rem}
+.spec-grid{display:grid;grid-template-columns:1fr 1fr;gap:.75rem;margin-top:.75rem}
+.spec-item{background:var(--navy-mid);border-radius:8px;padding:.75rem}
+.spec-label{font-size:.72rem;text-transform:uppercase;letter-spacing:.06em;color:var(--muted);font-weight:700;margin-bottom:.2rem}
+.spec-value{font-weight:600;font-size:.92rem}
+.advert-sidebar-card{background:var(--navy-light);border:1px solid var(--border);border-radius:var(--radius);padding:1.5rem;margin-bottom:1rem}
+.advert-price-big{font-family:var(--font-display);font-size:3rem;color:var(--white);line-height:1}
+.advert-commission{font-size:.8rem;color:var(--muted);margin-top:.3rem}
+.seller-block{display:flex;align-items:center;gap:.75rem;padding:1rem 0;border-top:1px solid var(--border);margin-top:1rem}
+.seller-ava{width:48px;height:48px;border-radius:50%;background:var(--red);display:flex;align-items:center;justify-content:center;font-weight:700;font-size:1.1rem;flex-shrink:0}
+.seller-name{font-weight:700}
+.seller-since{font-size:.75rem;color:var(--muted)}
+.stars{color:var(--gold);font-size:.9rem;margin-top:.1rem}
+.msg-form{margin-top:1rem}
+.msg-form textarea{width:100%;background:var(--steel);border:1px solid var(--border);border-radius:8px;padding:.7rem 1rem;color:var(--text);font-size:.88rem;outline:none;min-height:80px;resize:vertical}
+.msg-form textarea:focus{border-color:var(--red)}
+
+/* ===== ACCOUNT PAGE ===== */
+.account-grid{display:grid;grid-template-columns:240px 1fr;gap:2rem;align-items:start}
+.account-sidebar{background:var(--navy-light);border:1px solid var(--border);border-radius:var(--radius);overflow:hidden}
+.account-profile{padding:1.5rem;text-align:center;border-bottom:1px solid var(--border)}
+.account-ava{width:72px;height:72px;border-radius:50%;background:var(--red);display:flex;align-items:center;justify-content:center;font-weight:700;font-size:1.6rem;margin:0 auto 1rem}
+.account-nav-item{padding:.75rem 1.25rem;font-size:.88rem;font-weight:500;color:var(--muted);cursor:pointer;transition:all .2s;display:flex;align-items:center;gap:.6rem;border-left:3px solid transparent}
+.account-nav-item:hover{color:var(--text);background:rgba(255,255,255,.03)}
+.account-nav-item.active{color:var(--red);background:rgba(232,0,29,.06);border-left-color:var(--red)}
+.account-section{background:var(--navy-light);border:1px solid var(--border);border-radius:var(--radius);padding:1.5rem;margin-bottom:1rem}
+.account-section h3{font-weight:700;margin-bottom:1.25rem;display:flex;align-items:center;gap:.5rem}
+.my-ad-card{display:flex;gap:1rem;align-items:center;padding:.75rem;background:var(--navy-mid);border-radius:8px;margin-bottom:.6rem}
+.my-ad-img{width:72px;height:56px;border-radius:6px;background:var(--steel);display:flex;align-items:center;justify-content:center;font-size:1.6rem;flex-shrink:0}
+.my-ad-info{flex:1}
+.my-ad-title{font-weight:600;font-size:.88rem;margin-bottom:.2rem}
+.my-ad-price{font-family:var(--font-display);font-size:1.2rem;color:var(--red)}
+.my-ad-actions{display:flex;gap:.4rem}
+.stats-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:.75rem}
+.stat-card{background:var(--navy-mid);border-radius:8px;padding:1rem;text-align:center}
+.stat-card .num{font-family:var(--font-display);font-size:2rem;color:var(--white)}
+.stat-card .label{font-size:.72rem;text-transform:uppercase;letter-spacing:.06em;color:var(--muted)}
+
+/* ===== ADMIN PANEL ===== */
+.admin-topbar{background:rgba(232,0,29,.08);border-bottom:2px solid rgba(232,0,29,.3);padding:.5rem 0}
+.admin-topbar-inner{display:flex;align-items:center;justify-content:space-between;font-size:.82rem}
+.admin-grid{display:grid;grid-template-columns:220px 1fr;gap:2rem;align-items:start}
+.admin-sidebar{background:var(--navy-light);border:1px solid var(--border);border-radius:var(--radius);overflow:hidden}
+.admin-nav-item{padding:.7rem 1.25rem;font-size:.85rem;font-weight:500;color:var(--muted);cursor:pointer;transition:all .2s;display:flex;align-items:center;gap:.6rem}
+.admin-nav-item:hover{color:var(--text);background:rgba(255,255,255,.03)}
+.admin-nav-item.active{color:var(--red);background:rgba(232,0,29,.06)}
+.admin-kpi{display:grid;grid-template-columns:repeat(4,1fr);gap:1rem;margin-bottom:1.5rem}
+.kpi-card{background:var(--navy-light);border:1px solid var(--border);border-radius:var(--radius);padding:1.25rem}
+.kpi-num{font-family:var(--font-display);font-size:2.2rem;color:var(--white)}
+.kpi-label{font-size:.75rem;text-transform:uppercase;letter-spacing:.06em;color:var(--muted)}
+.kpi-delta{font-size:.75rem;margin-top:.2rem}
+.kpi-delta.up{color:var(--green)}
+.kpi-delta.down{color:var(--red)}
+.data-table{width:100%;border-collapse:collapse}
+.data-table th{text-align:left;font-size:.72rem;text-transform:uppercase;letter-spacing:.08em;color:var(--muted);padding:.65rem 1rem;border-bottom:1px solid var(--border);font-weight:700}
+.data-table td{padding:.75rem 1rem;border-bottom:1px solid rgba(46,58,82,.4);font-size:.88rem;vertical-align:middle}
+.data-table tr:hover td{background:rgba(255,255,255,.015)}
+.status-dot{width:7px;height:7px;border-radius:50%;display:inline-block;margin-right:.4rem}
+.status-dot.live{background:var(--green)}
+.status-dot.pending{background:var(--gold)}
+.status-dot.sold{background:var(--muted)}
+.status-dot.suspended{background:var(--red)}
+
+/* ===== TOAST ===== */
+.toast-stack{position:fixed;bottom:2rem;right:2rem;z-index:9999;display:flex;flex-direction:column;gap:.5rem}
+.toast{background:var(--navy-mid);border:1px solid var(--border);border-radius:var(--radius);padding:.85rem 1.25rem;font-size:.88rem;font-weight:500;box-shadow:var(--shadow);animation:slideIn .3s ease;display:flex;align-items:center;gap:.75rem;min-width:260px}
+.toast.success{border-color:var(--green)}
+.toast.error{border-color:var(--red)}
+.toast.info{border-color:var(--gold)}
+@keyframes slideIn{from{opacity:0;transform:translateX(2rem)}to{opacity:1;transform:translateX(0)}}
+
+/* ===== FOOTER ===== */
+footer{background:var(--navy-mid);border-top:1px solid var(--border);padding:3rem 0 1.5rem;margin-top:3rem}
+.footer-grid{display:grid;grid-template-columns:2fr 1fr 1fr 1fr;gap:2rem;margin-bottom:2rem}
+.footer-brand p{color:var(--muted);font-size:.85rem;line-height:1.7;margin:.75rem 0}
+.footer-col h5{font-size:.72rem;text-transform:uppercase;letter-spacing:.1em;color:var(--muted);font-weight:700;margin-bottom:.75rem}
+.footer-col a{display:block;font-size:.85rem;color:var(--muted);padding:.25rem 0;transition:color .2s}
+.footer-col a:hover{color:var(--text)}
+.footer-bottom{display:flex;justify-content:space-between;align-items:center;padding-top:1.5rem;border-top:1px solid var(--border);font-size:.78rem;color:var(--muted)}
+
+/* ===== FLOW GUIDE ===== */
+.flow-guide{background:var(--navy-light);border:1px solid var(--border);border-radius:var(--radius);padding:2rem;margin:2rem 0}
+.flow-steps{display:flex;gap:0;counter-reset:step;position:relative}
+.flow-steps::before{content:'';position:absolute;top:24px;left:24px;right:24px;height:2px;background:var(--border);z-index:0}
+.flow-step{flex:1;text-align:center;position:relative;z-index:1}
+.flow-step-num{width:48px;height:48px;border-radius:50%;background:var(--navy-mid);border:2px solid var(--border);display:flex;align-items:center;justify-content:center;font-family:var(--font-display);font-size:1.2rem;margin:0 auto .75rem;transition:all .3s}
+.flow-step.done .flow-step-num{background:var(--green);border-color:var(--green);color:#fff}
+.flow-step.active .flow-step-num{background:var(--red);border-color:var(--red);color:#fff;box-shadow:0 0 20px rgba(232,0,29,.4)}
+.flow-step-label{font-size:.8rem;font-weight:600;color:var(--muted)}
+.flow-step.active .flow-step-label{color:var(--text)}
+.flow-step.done .flow-step-label{color:var(--green)}
+
+/* ===== RESPONSIVE ===== */
+@media(max-width:900px){
+  .admin-kpi{grid-template-columns:repeat(2,1fr)}
+  .cat-grid{grid-template-columns:repeat(2,1fr)}
+}
+
+@media(max-width:768px){
+  /* Hide desktop nav & show hamburger */
+  .nav-links,.header-actions .btn-outline,.header-actions .btn-primary{display:none}
+  .hamburger{display:flex}
+
+  /* Mobile nav drawer */
+  .mobile-nav{display:none;position:fixed;top:64px;left:0;right:0;bottom:0;background:var(--navy-mid);z-index:998;padding:1.5rem;overflow-y:auto;flex-direction:column;gap:.5rem;border-top:1px solid var(--border)}
+  .mobile-nav.open{display:flex}
+  .mobile-nav-link{padding:.9rem 1rem;border-radius:8px;font-weight:600;color:var(--text);cursor:pointer;border:1px solid var(--border);text-align:center}
+  .mobile-nav-link:hover{background:var(--navy-light);border-color:var(--red);color:var(--red)}
+  .mobile-nav-divider{height:1px;background:var(--border);margin:.5rem 0}
+  .mobile-currency-row{display:flex;align-items:center;justify-content:center;gap:.5rem;padding:.75rem;font-size:.85rem;color:var(--gold);font-weight:600}
+
+  /* Layout adjustments */
+  .hero-inner,.advert-view,.account-grid,.admin-grid,.footer-grid{grid-template-columns:1fr}
+  .hero h1{font-size:2.8rem}
+  .hero-visual{display:none}
+  .mega-panel{width:calc(100vw - 3rem);left:-1.5rem}
+  .form-row{grid-template-columns:1fr}
+  .stats-grid{grid-template-columns:repeat(2,1fr)}
+  .spec-grid{grid-template-columns:1fr}
+}
+
+@media(max-width:480px){
+  .listings-grid{grid-template-columns:1fr}
+  .cat-grid{grid-template-columns:repeat(2,1fr)}
+  .admin-kpi{grid-template-columns:1fr 1fr}
+  .hero h1{font-size:2.2rem}
+}
+
+
+
+
+
+
+/* ===== MOBILE NAV — hidden by default on desktop ===== */
+.mobile-nav { display: none; }
+
+/* ===== TOAST FADE OUT (missing animation) ===== */
+@keyframes slideOut {
+  from { opacity: 1; transform: translateX(0); }
+  to   { opacity: 0; transform: translateX(2rem); }
+}
+.toast.hiding { animation: slideOut .35s ease forwards; }
+
+
+
+
+
+
+
+
+</style>
+
+
+<body>
+
+<!-- ===== TOAST STACK ===== -->
+<div class="toast-stack" id="toastStack"></div>
+
+<!-- =======================================================
+     MODAL: AUTH (Login / Register)  ← NEW
+     ======================================================= -->
+<div class="modal-overlay hidden" id="authModal">
+  <div class="modal-box" style="max-width:440px">
+    <div style="display:flex;justify-content:space-between;align-items:start;margin-bottom:1.25rem">
+      <div class="logo" style="font-size:1.5rem">RC<span class="logo-dot">.</span>BAY</div>
+      <button class="btn btn-ghost btn-sm" onclick="closeAuthModal()">✕</button>
+    </div>
+
+    <!-- Tabs -->
+    <div class="auth-tabs">
+      <div class="auth-tab active" data-tab="login" onclick="switchAuthTab('login')">Sign In</div>
+      <div class="auth-tab" data-tab="register" onclick="switchAuthTab('register')">Create Account</div>
+    </div>
+
+    <!-- LOGIN PANEL -->
+    <div class="auth-panel active" id="auth-login">
+      <div class="form-group">
+        <label>Email Address</label>
+        <input type="email" id="loginEmail" placeholder="you@email.com">
+      </div>
+      <div class="form-group">
+        <label>Password</label>
+        <input type="password" id="loginPass" placeholder="••••••••">
+      </div>
+      <div style="text-align:right;margin-bottom:1rem">
+        <a style="font-size:.78rem;color:var(--red);cursor:pointer" onclick="toast('Password reset email sent!','info')">Forgot password?</a>
+      </div>
+      <button class="btn btn-primary btn-lg w-full" onclick="doLogin()">🔐 Sign In</button>
+      <div class="auth-divider">or continue with</div>
+      <button class="social-btn" onclick="toast('Google login coming soon','info')">🔴 Continue with Google</button>
+      <button class="social-btn" onclick="toast('Facebook login coming soon','info')">🔵 Continue with Facebook</button>
+      <p class="auth-terms">Don't have an account? <a onclick="switchAuthTab('register')" style="cursor:pointer">Create one free</a></p>
+    </div>
+
+    <!-- REGISTER PANEL -->
+    <div class="auth-panel" id="auth-register">
+      <div class="form-group">
+        <label>Full Name</label>
+        <input type="text" id="regName" placeholder="James Kirk">
+      </div>
+      <div class="form-group">
+        <label>Email Address</label>
+        <input type="email" id="regEmail" placeholder="you@email.com">
+      </div>
+      <div class="form-row">
+        <div class="form-group">
+          <label>Password</label>
+          <input type="password" id="regPass" placeholder="Min. 8 chars">
+        </div>
+        <div class="form-group">
+          <label>Confirm Password</label>
+          <input type="password" id="regPass2" placeholder="Repeat password">
+        </div>
+      </div>
+      <button class="btn btn-primary btn-lg w-full" onclick="doRegister()">🚀 Create Account</button>
+      <div class="auth-divider">or continue with</div>
+      <button class="social-btn" onclick="toast('Google signup coming soon','info')">🔴 Sign up with Google</button>
+      <p class="auth-terms">By registering you agree to our <a href="#">Terms of Service</a> and <a href="#">Privacy Policy</a>.</p>
+    </div>
+  </div>
+</div>
+
+<!-- =======================================================
+     MODAL: PAYMENT
+     ======================================================= -->
+<div class="modal-overlay hidden" id="payModal">
+  <div class="modal-box">
+    <div style="display:flex;justify-content:space-between;align-items:start;margin-bottom:.5rem">
+      <h2>Publish Your Ad</h2>
+      <button class="btn btn-ghost btn-sm" onclick="closeModal()">✕</button>
+    </div>
+    <p style="color:var(--muted);font-size:.9rem">Your advert is ready. Pay the platform fee to go live instantly.</p>
+    <div class="price-breakdown">
+      <div class="price-row"><span>Ad listing value</span><span id="modalAdValue" style="font-weight:700">£0.00</span></div>
+      <div class="price-row"><span>Platform fee (10%)</span><span class="text-red fw-600" id="modalFee">£0.00</span></div>
+      <div class="price-row" style="border-bottom:none">
+        <span style="font-weight:700">Total due today</span>
+        <span class="price-total" id="modalTotal">£0.00</span>
+      </div>
+    </div>
+    <p style="font-size:.75rem;color:var(--muted);margin-bottom:1rem">💡 You are only charged the platform fee. The ad value is what you're selling for.</p>
+    <div class="payment-methods">
+      <div class="pay-method selected" onclick="selectPay(this)">💳 Card</div>
+      <div class="pay-method" onclick="selectPay(this)">🏦 Bank</div>
+      <div class="pay-method" onclick="selectPay(this)">🅿 PayPal</div>
+    </div>
+    <div class="form-group" style="margin:.75rem 0">
+      <label>Card Number</label>
+      <input type="text" placeholder="1234 5678 9012 3456" maxlength="19" oninput="fmtCard(this)">
+    </div>
+    <div class="form-row">
+      <div class="form-group"><label>Expiry</label><input type="text" placeholder="MM/YY" maxlength="5"></div>
+      <div class="form-group"><label>CVV</label><input type="text" placeholder="123" maxlength="3"></div>
+    </div>
+    <button class="btn btn-primary btn-lg w-full mt-2" onclick="processPayment()">
+      🔒 Pay & Publish Ad
+    </button>
+    <p class="text-xs text-muted mt-2" style="text-align:center">Secured by 256-bit SSL encryption</p>
+  </div>
+</div>
+
+<!-- =======================================================
+     MODAL: MESSAGE SELLER
+     ======================================================= -->
+<div class="modal-overlay hidden" id="msgModal">
+  <div class="modal-box">
+    <div style="display:flex;justify-content:space-between;align-items:start;margin-bottom:1rem">
+      <h2>Message Seller</h2>
+      <button class="btn btn-ghost btn-sm" onclick="document.getElementById('msgModal').classList.add('hidden')">✕</button>
+    </div>
+    <p style="color:var(--muted);font-size:.85rem;margin-bottom:1rem">Your contact details are kept private. The seller will reply via RC Bay's messaging system.</p>
+    <div class="form-group">
+      <label>Your message</label>
+      <textarea rows="4" placeholder="Hi, I'm interested in this item. Is it still available?"></textarea>
+    </div>
+    <div class="form-group">
+      <label>Your phone (optional)</label>
+      <input type="tel" placeholder="+44 7000 000000">
+    </div>
+    <button class="btn btn-primary btn-lg w-full" onclick="sendMsg()">📨 Send Message</button>
+  </div>
+</div>
+
+<!-- =======================================================
+     MODAL: MARK AS SOLD
+     ======================================================= -->
+<div class="modal-overlay hidden" id="soldModal">
+  <div class="modal-box" style="text-align:center">
+    <div style="font-size:4rem;margin-bottom:1rem">🎉</div>
+    <h2>Mark as Sold?</h2>
+    <p style="color:var(--muted);margin:1rem 0">Once marked sold, your advert will be removed from public listings and archived in your account history.</p>
+    <div style="display:flex;gap:.75rem;margin-top:1.5rem">
+      <button class="btn btn-outline w-full" onclick="document.getElementById('soldModal').classList.add('hidden')">Cancel</button>
+      <button class="btn btn-green w-full" onclick="markSold()">✓ Confirm Sold</button>
+    </div>
+  </div>
+</div>
+
+<!-- =======================================================
+     HEADER
+     ======================================================= -->
+<header id="header">
+  <div class="container header-inner">
+    <!-- Logo -->
+    <div class="logo" onclick="showPage('home')" style="cursor:pointer">
+      RC<span class="logo-dot">.</span>BAY
+      <div class="logo-badge">BETA</div>
+    </div>
+
+    <!-- Desktop Nav -->
+    <nav class="nav-links">
+      <a class="nav-link active" id="nav-home" onclick="showPage('home')">Home</a>
+      <div class="mega-trigger">
+        <a class="nav-link" id="nav-products" onclick="showPage('products')">All RC Products ▾</a>
+        <div class="mega-panel">
+          <div class="mega-col">
+            <h4>Shop by Type</h4>
+            <div class="mega-item featured" onclick="showPage('products')"><div class="mega-icon">🏎</div> Cars & Buggies</div>
+            <div class="mega-item" onclick="showPage('products')"><div class="mega-icon">✈️</div> Aeroplanes</div>
+            <div class="mega-item" onclick="showPage('products')"><div class="mega-icon">🚢</div> Boats</div>
+            <div class="mega-item" onclick="showPage('products')"><div class="mega-icon">🚁</div> Helicopters</div>
+            <div class="mega-item" onclick="showPage('products')"><div class="mega-icon">🤿</div> Drones / FPV</div>
+            <div class="mega-item" onclick="showPage('products')"><div class="mega-icon">🪨</div> Rock Crawlers</div>
+          </div>
+          <div class="mega-col">
+            <h4>Shop by Parts</h4>
+            <div class="mega-item" onclick="showPage('products')"><div class="mega-icon">🔋</div> Batteries & ESC</div>
+            <div class="mega-item" onclick="showPage('products')"><div class="mega-icon">⚙️</div> Engines & Motors</div>
+            <div class="mega-item" onclick="showPage('products')"><div class="mega-icon">📡</div> Electronics</div>
+            <div class="mega-item" onclick="showPage('products')"><div class="mega-icon">🔌</div> Chargers</div>
+            <div class="mega-item" onclick="showPage('products')"><div class="mega-icon">🔧</div> Parts & Upgrades</div>
+            <h4 class="mt-2">Browse All</h4>
+            <div class="mega-item featured" onclick="showPage('products')"><div class="mega-icon">🌎</div> View All Listings</div>
+          </div>
+        </div>
+      </div>
+      <!-- Auth-gated: calls requireAuthThenCreate() -->
+      <a class="nav-link" id="nav-create" onclick="requireAuthThenCreate()">Sell an Item</a>
+      <a class="nav-link" id="nav-admin" onclick="showPage('admin')">Admin</a>
+    </nav>
+
+    <!-- Desktop Actions -->
+    <div class="header-actions">
+      <div class="currency-pill" id="currencyPill" title="Click to change currency">
+        <span>🌍</span> <span id="currencySymbol">GBP £</span>
+      </div>
+      <!-- If logged in: shows avatar + account; if not: login + register buttons -->
+      <div id="userAvaBtn" class="user-avatar hidden" onclick="showPage('account')">EL</div>
+      <button class="btn btn-outline btn-sm" id="btnAccount" onclick="openAuthModal('login')">Sign In</button>
+      <button class="btn btn-primary btn-sm" id="btnPostAd" onclick="requireAuthThenCreate()">+ Post Ad</button>
+    </div>
+
+    <!-- Mobile Hamburger (NEW) -->
+    <div class="hamburger" id="hamburgerBtn" onclick="toggleMobileNav()">
+      <span></span><span></span><span></span>
+    </div>
+  </div>
+</header>
+
+<!-- Mobile Nav Drawer (NEW) -->
+<nav class="mobile-nav" id="mobileNav">
+  <div class="mobile-currency-row" id="mobileCurrencyLabel">🇬🇧 GBP £</div>
+  <div class="mobile-nav-divider"></div>
+  <div class="mobile-nav-link" onclick="showPage('home')">🏠 Home</div>
+  <div class="mobile-nav-link" onclick="showPage('products')">🏎 Browse All RC Products</div>
+  <div class="mobile-nav-link" onclick="requireAuthThenCreate()">📝 Sell an Item</div>
+  <div class="mobile-nav-link" onclick="showPage('admin')">🔐 Admin</div>
+  <div class="mobile-nav-divider"></div>
+
+  <!-- Logged OUT state (default visible) -->
+  <div class="mobile-nav-link" id="mobileSignIn"
+       onclick="openAuthModal('login')">Sign In</div>
+  <div class="mobile-nav-link" id="mobileRegister"
+       onclick="openAuthModal('register')"
+       style="background:var(--red);color:#fff;border-color:var(--red)">Create Account</div>
+
+  <!-- Logged IN state (hidden by default) -->
+  <div class="mobile-nav-link hidden" id="mobileAccountLink"
+       onclick="showPage('account')">👤 My Account</div>
+  <div class="mobile-nav-link hidden" id="mobileLogoutLink"
+       onclick="doLogout()"
+       style="color:var(--red);border-color:var(--red)">🚪 Sign Out</div>
+</nav>
+
+<!-- =======================================================
+     PAGE: HOME
+     ======================================================= -->
+<div class="page active" id="page-home">
+  <!-- HERO -->
+  <section class="hero">
+    <div class="container hero-inner">
+      <div>
+        <div class="hero-tag"><div class="hero-tag-dot"></div> UK's #1 RC Marketplace</div>
+        <h1>Buy & Sell <span>RC</span><br>Products</h1>
+        <p>The UK's dedicated marketplace for remote control enthusiasts. Cars, drones, boats, planes and more — bought and sold safely.</p>
+        <div class="hero-actions">
+          <button class="btn btn-primary btn-lg" onclick="requireAuthThenCreate()">🚀 Post a Free Ad</button>
+          <button class="btn btn-outline btn-lg" onclick="showPage('products')">Browse Listings</button>
+        </div>
+        <div class="hero-stats">
+          <div class="hero-stat"><div class="num">4,218</div><div class="lbl">Live Ads</div></div>
+          <div class="hero-stat"><div class="num">12K+</div><div class="lbl">Members</div></div>
+          <div class="hero-stat"><div class="num">98%</div><div class="lbl">Satisfaction</div></div>
+        </div>
+      </div>
+      <div class="hero-visual">
+        <div class="hero-card-stack">
+          <div class="float-card main">
+            <div class="listing-thumb">🏎</div>
+            <div style="display:flex;justify-content:space-between;align-items:start">
+              <div>
+                <div class="listing-title">Traxxas Slash 4x4 Ultimate</div>
+                <div class="listing-price lc-price" data-gbp="549">£549</div>
+              </div>
+              <div class="badge badge-green">New</div>
+            </div>
+            <div class="listing-meta">
+              <div class="badge badge-gray">1:10 Scale</div>
+              <div class="badge badge-gray">UK</div>
+            </div>
+          </div>
+          <div class="float-card secondary">
+            <div style="display:flex;gap:.6rem;align-items:center">
+              <div style="font-size:1.8rem">✈️</div>
+              <div>
+                <div class="listing-title" style="font-size:.8rem">FMS Fox Glider EPO</div>
+                <div class="listing-price lc-price" data-gbp="189" style="font-size:1.1rem">£189</div>
+              </div>
+              <div class="badge badge-red" style="margin-left:auto">Hot</div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- SEARCH BAR -->
+  <div class="container mt-4">
+    <div class="search-bar">
+      <select>
+        <option>All Categories</option>
+        <option>Cars & Buggies</option>
+        <option>Aeroplanes</option>
+        <option>Boats</option>
+        <option>Drones / FPV</option>
+        <option>Helicopters</option>
+        <option>Rock Crawlers</option>
+        <option>Parts & Accessories</option>
+      </select>
+      <select>
+        <option>Any Condition</option>
+        <option>New</option>
+        <option>Like New</option>
+        <option>Used - Good</option>
+        <option>Used - Fair</option>
+      </select>
+      <input type="text" placeholder="e.g. Traxxas, DJI, HPI, Tamiya…">
+      <button class="btn btn-primary" onclick="showPage('products')">🔍 Search</button>
+    </div>
+  </div>
+
+  <!-- FEATURED LISTINGS -->
+  <section class="section container">
+    <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:1.5rem">
+      <div>
+        <h2 style="font-family:var(--font-display);font-size:2rem">Featured Listings</h2>
+        <p style="color:var(--muted);font-size:.85rem">Hand-picked by our team</p>
+      </div>
+      <button class="btn btn-outline" onclick="showPage('products')">View All →</button>
+    </div>
+    <div class="listings-grid">
+      <div class="listing-card" onclick="showPage('advert')">
+        <div class="listing-card-img"><div class="listing-card-img-bg"></div>🏎</div>
+        <div class="listing-card-body">
+          <div style="display:flex;justify-content:space-between;margin-bottom:.4rem">
+            <div class="badge badge-red">Featured</div><div class="badge badge-gray">Cars</div>
+          </div>
+          <div class="listing-card-title">Traxxas Slash 4x4 LCG — 1:10 Brushless</div>
+          <div class="listing-card-price lc-price" data-gbp="549">£549</div>
+          <div class="listing-meta"><div class="badge badge-gray text-xs">Like New</div></div>
+        </div>
+        <div class="listing-card-footer"><div class="loc-tag">📍 Manchester, UK</div><div class="text-xs text-muted">2h ago</div></div>
+      </div>
+      <div class="listing-card" onclick="showPage('advert')">
+        <div class="listing-card-img"><div class="listing-card-img-bg" style="background:radial-gradient(ellipse at center,var(--gold) 0%,transparent 70%);opacity:.2"></div>✈️</div>
+        <div class="listing-card-body">
+          <div style="display:flex;justify-content:space-between;margin-bottom:.4rem">
+            <div class="badge badge-gold">Hot</div><div class="badge badge-gray">Planes</div>
+          </div>
+          <div class="listing-card-title">FMS FW-190 1400mm Warbird RTF</div>
+          <div class="listing-card-price lc-price" data-gbp="289">£289</div>
+          <div class="listing-meta"><div class="badge badge-green text-xs">New</div></div>
+        </div>
+        <div class="listing-card-footer"><div class="loc-tag">📍 London, UK</div><div class="text-xs text-muted">5h ago</div></div>
+      </div>
+      <div class="listing-card" onclick="showPage('advert')">
+        <div class="listing-card-img"><div class="listing-card-img-bg" style="background:radial-gradient(ellipse at center,#0af 0%,transparent 70%);opacity:.2"></div>🚢</div>
+        <div class="listing-card-body">
+          <div style="display:flex;justify-content:space-between;margin-bottom:.4rem">
+            <div class="badge badge-gray">Boats</div><div class="badge badge-gray">Used</div>
+          </div>
+          <div class="listing-card-title">Proboat Blackjack 42" Brushless Catamaran</div>
+          <div class="listing-card-price lc-price" data-gbp="420">£420</div>
+          <div class="listing-meta"><div class="badge badge-gray text-xs">RTR</div></div>
+        </div>
+        <div class="listing-card-footer"><div class="loc-tag">📍 Bristol, UK</div><div class="text-xs text-muted">1d ago</div></div>
+      </div>
+      <div class="listing-card" onclick="showPage('advert')">
+        <div class="listing-card-img"><div class="listing-card-img-bg" style="background:radial-gradient(ellipse at center,var(--green) 0%,transparent 70%);opacity:.2"></div>🚁</div>
+        <div class="listing-card-body">
+          <div style="display:flex;justify-content:space-between;margin-bottom:.4rem">
+            <div class="badge badge-green">New</div><div class="badge badge-gray">Drones</div>
+          </div>
+          <div class="listing-card-title">DJI Avata 2 FPV Drone — Fly More Combo</div>
+          <div class="listing-card-price lc-price" data-gbp="999">£999</div>
+          <div class="listing-meta"><div class="badge badge-gray text-xs">FPV</div></div>
+        </div>
+        <div class="listing-card-footer"><div class="loc-tag">📍 Birmingham, UK</div><div class="text-xs text-muted">3h ago</div></div>
+      </div>
+    </div>
+  </section>
+
+  <!-- WHY RC BAY -->
+  <section class="section" style="background:var(--navy-mid);border-top:1px solid var(--border);border-bottom:1px solid var(--border)">
+    <div class="container">
+      <h2 style="font-family:var(--font-display);font-size:2rem;text-align:center;margin-bottom:2.5rem">Why RC Bay?</h2>
+      <div style="display:grid;grid-template-columns:repeat(3,1fr);gap:1.5rem">
+        <div style="background:var(--navy-light);border:1px solid var(--border);border-radius:var(--radius);padding:1.5rem;text-align:center">
+          <div style="font-size:2.5rem;margin-bottom:.75rem">🔐</div>
+          <h3 style="font-weight:700;margin-bottom:.5rem">Safe Messaging</h3>
+          <p style="color:var(--muted);font-size:.85rem;line-height:1.6">Your contact details stay private. Buyers and sellers communicate through our secure system.</p>
+        </div>
+        <div style="background:var(--navy-light);border:1px solid var(--border);border-radius:var(--radius);padding:1.5rem;text-align:center">
+          <div style="font-size:2.5rem;margin-bottom:.75rem">🌍</div>
+          <h3 style="font-weight:700;margin-bottom:.5rem">Global Currency</h3>
+          <p style="color:var(--muted);font-size:.85rem;line-height:1.6">Prices shown in your local currency automatically. GBP, USD, AUD, EUR and more.</p>
+        </div>
+        <div style="background:var(--navy-light);border:1px solid var(--border);border-radius:var(--radius);padding:1.5rem;text-align:center">
+          <div style="font-size:2.5rem;margin-bottom:.75rem">⚡</div>
+          <h3 style="font-weight:700;margin-bottom:.5rem">Instant Publishing</h3>
+          <p style="color:var(--muted);font-size:.85rem;line-height:1.6">Pay our small 10% fee and your ad goes live instantly — no waiting, no delays.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+</div>
+
+<!-- =======================================================
+     PAGE: ALL RC PRODUCTS
+     ======================================================= -->
+<div class="page" id="page-products">
+  <div class="category-hero">
+    <div class="container">
+      <div style="display:flex;align-items:center;gap:.5rem;color:var(--muted);font-size:.82rem;margin-bottom:.75rem">
+        <span onclick="showPage('home')" style="cursor:pointer">Home</span> › <span>All RC Products</span>
+      </div>
+      <h1 style="font-family:var(--font-display);font-size:3rem">All RC Products</h1>
+      <p style="color:var(--muted);margin:.5rem 0 1.5rem">Browse 4,218 listings across all categories</p>
+      <div style="display:flex;gap:.5rem;flex-wrap:wrap;padding-bottom:1.25rem">
+        <button class="btn btn-primary btn-sm">All</button>
+        <button class="btn btn-outline btn-sm">Cars 🏎</button>
+        <button class="btn btn-outline btn-sm">Planes ✈️</button>
+        <button class="btn btn-outline btn-sm">Boats 🚢</button>
+        <button class="btn btn-outline btn-sm">Drones 🚁</button>
+        <button class="btn btn-outline btn-sm">Helis 🚁</button>
+        <button class="btn btn-outline btn-sm">Rock Crawlers 🪨</button>
+        <button class="btn btn-outline btn-sm">Parts 🔧</button>
+      </div>
+    </div>
+  </div>
+  <div class="container section">
+    <h2 style="font-family:var(--font-display);font-size:1.8rem;margin-bottom:1.5rem">Browse by Category</h2>
+    <div class="cat-grid">
+      <div class="cat-card" onclick="showPage('advert')"><div class="icon">🏎</div><div class="name">Cars & Buggies</div><div class="count">1,204 listings</div><div class="subs"><span class="sub-tag">Nitro</span><span class="sub-tag">Electric</span><span class="sub-tag">Touring</span></div></div>
+      <div class="cat-card" onclick="showPage('advert')"><div class="icon">✈️</div><div class="name">Aeroplanes</div><div class="count">876 listings</div><div class="subs"><span class="sub-tag">Warbirds</span><span class="sub-tag">Gliders</span><span class="sub-tag">Sport</span></div></div>
+      <div class="cat-card" onclick="showPage('advert')"><div class="icon">🚢</div><div class="name">Boats</div><div class="count">432 listings</div><div class="subs"><span class="sub-tag">Racing</span><span class="sub-tag">Sail</span><span class="sub-tag">Scale</span></div></div>
+      <div class="cat-card" onclick="showPage('advert')"><div class="icon">🚁</div><div class="name">Drones & FPV</div><div class="count">961 listings</div><div class="subs"><span class="sub-tag">FPV Racing</span><span class="sub-tag">Cinematic</span></div></div>
+      <div class="cat-card" onclick="showPage('advert')"><div class="icon">🚁</div><div class="name">Helicopters</div><div class="count">289 listings</div><div class="subs"><span class="sub-tag">Coaxial</span><span class="sub-tag">Scale</span><span class="sub-tag">3D</span></div></div>
+      <div class="cat-card" onclick="showPage('advert')"><div class="icon">🪨</div><div class="name">Rock Crawlers</div><div class="count">198 listings</div><div class="subs"><span class="sub-tag">Trail</span><span class="sub-tag">Competition</span></div></div>
+      <div class="cat-card" onclick="showPage('advert')"><div class="icon">🔋</div><div class="name">Batteries & ESC</div><div class="count">543 listings</div><div class="subs"><span class="sub-tag">LiPo</span><span class="sub-tag">NiMH</span></div></div>
+      <div class="cat-card" onclick="showPage('advert')"><div class="icon">🔧</div><div class="name">Parts & Upgrades</div><div class="count">715 listings</div><div class="subs"><span class="sub-tag">Motors</span><span class="sub-tag">Servos</span></div></div>
+    </div>
+
+    <div style="display:flex;justify-content:space-between;align-items:center;margin:3rem 0 1.5rem">
+      <h2 style="font-family:var(--font-display);font-size:1.8rem">All Listings</h2>
+      <select style="background:var(--steel);border:1px solid var(--border);border-radius:8px;padding:.5rem .8rem;color:var(--text);font-size:.85rem">
+        <option>Newest First</option>
+        <option>Price: Low–High</option>
+        <option>Price: High–Low</option>
+      </select>
+    </div>
+
+    <div class="listings-grid">
+      <div class="listing-card" onclick="showPage('advert')">
+        <div class="listing-card-img"><div class="listing-card-img-bg"></div>🏎</div>
+        <div class="listing-card-body">
+          <div class="badge badge-red mb-1">Featured</div>
+          <div class="listing-card-title">Traxxas Slash 4x4 LCG — 1:10 Brushless</div>
+          <div class="listing-card-price lc-price" data-gbp="549">£549</div>
+          <div class="listing-meta"><div class="badge badge-gray text-xs">Like New</div></div>
+        </div>
+        <div class="listing-card-footer"><div class="loc-tag">📍 Manchester</div><div class="text-xs text-muted">2h ago</div></div>
+      </div>
+      <div class="listing-card" onclick="showPage('advert')">
+        <div class="listing-card-img">✈️</div>
+        <div class="listing-card-body">
+          <div class="badge badge-gold mb-1">Hot</div>
+          <div class="listing-card-title">FMS FW-190 1400mm Warbird RTF</div>
+          <div class="listing-card-price lc-price" data-gbp="289">£289</div>
+          <div class="listing-meta"><div class="badge badge-green text-xs">New</div></div>
+        </div>
+        <div class="listing-card-footer"><div class="loc-tag">📍 London</div><div class="text-xs text-muted">5h ago</div></div>
+      </div>
+      <div class="listing-card" onclick="showPage('advert')">
+        <div class="listing-card-img">🚢</div>
+        <div class="listing-card-body">
+          <div class="listing-card-title">Proboat Blackjack 42" Catamaran</div>
+          <div class="listing-card-price lc-price" data-gbp="420">£420</div>
+          <div class="listing-meta"><div class="badge badge-gray text-xs">RTR</div></div>
+        </div>
+        <div class="listing-card-footer"><div class="loc-tag">📍 Bristol</div><div class="text-xs text-muted">1d ago</div></div>
+      </div>
+      <div class="listing-card" onclick="showPage('advert')">
+        <div class="listing-card-img">🚁</div>
+        <div class="listing-card-body">
+          <div class="listing-card-title">DJI Avata 2 Fly More Combo</div>
+          <div class="listing-card-price lc-price" data-gbp="999">£999</div>
+          <div class="listing-meta"><div class="badge badge-green text-xs">New</div></div>
+        </div>
+        <div class="listing-card-footer"><div class="loc-tag">📍 Birmingham</div><div class="text-xs text-muted">3h ago</div></div>
+      </div>
+      <div class="listing-card" onclick="showPage('advert')">
+        <div class="listing-card-img">🪨</div>
+        <div class="listing-card-body">
+          <div class="listing-card-title">Axial SCX10 III Jeep JL — Rock Crawler</div>
+          <div class="listing-card-price lc-price" data-gbp="340">£340</div>
+          <div class="listing-meta"><div class="badge badge-gray text-xs">Used</div></div>
+        </div>
+        <div class="listing-card-footer"><div class="loc-tag">📍 Leeds</div><div class="text-xs text-muted">6h ago</div></div>
+      </div>
+      <div class="listing-card" onclick="showPage('advert')">
+        <div class="listing-card-img">🔋</div>
+        <div class="listing-card-body">
+          <div class="listing-card-title">Tattu R-Line 4S 1550mAh — 5x Pack</div>
+          <div class="listing-card-price lc-price" data-gbp="89">£89</div>
+          <div class="listing-meta"><div class="badge badge-green text-xs">New</div></div>
+        </div>
+        <div class="listing-card-footer"><div class="loc-tag">📍 Sheffield</div><div class="text-xs text-muted">12h ago</div></div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- =======================================================
+     PAGE: CREATE ADVERT
+     ======================================================= -->
+<div class="page" id="page-create">
+  <div style="background:var(--navy-mid);border-bottom:1px solid var(--border);padding:2rem 0">
+    <div class="container">
+      <div style="display:flex;align-items:center;gap:.5rem;color:var(--muted);font-size:.82rem;margin-bottom:.75rem">
+        <span onclick="showPage('home')" style="cursor:pointer">Home</span> › <span>Sell an Item</span>
+      </div>
+      <h1 style="font-family:var(--font-display);font-size:2.8rem">Create Your Advert</h1>
+      <p style="color:var(--muted);margin-top:.4rem">Fill in your details, then pay our 10% fee to go live instantly.</p>
+    </div>
+  </div>
+  <div class="container section">
+    <!-- FLOW STEPS -->
+    <div class="flow-guide">
+      <h3 style="font-weight:700;margin-bottom:1.5rem">How it works</h3>
+      <div class="flow-steps">
+        <div class="flow-step done" id="fstep1"><div class="flow-step-num">✓</div><div class="flow-step-label">Register / Login</div></div>
+        <div class="flow-step active" id="fstep2"><div class="flow-step-num">2</div><div class="flow-step-label">Fill Ad Details</div></div>
+        <div class="flow-step" id="fstep3"><div class="flow-step-num">3</div><div class="flow-step-label">Pay 10% Fee</div></div>
+        <div class="flow-step" id="fstep4"><div class="flow-step-num">4</div><div class="flow-step-label">Ad Goes Live!</div></div>
+      </div>
+    </div>
+
+    <div style="display:grid;grid-template-columns:1fr 300px;gap:1.5rem;align-items:start">
+      <div class="advert-form">
+
+        <!-- SECTION 1: LOCATION -->
+        <div class="form-section">
+          <div class="form-section-title"><span>1</span> Listing Location</div>
+          <div class="form-group">
+            <label>🌍 Geo Region (auto-detected)</label>
+            <select id="geoRegion">
+              <option value="uk">🇬🇧 United Kingdom</option>
+              <option value="us">🇺🇸 United States</option>
+              <option value="au">🇦🇺 Australia</option>
+              <option value="ca">🇨🇦 Canada</option>
+              <option value="jp">🇯🇵 Japan</option>
+              <option value="eu">🇪🇺 Europe (EUR)</option>
+            </select>
+            <!-- id added for geo sync -->
+            <div style="font-size:.75rem;color:var(--muted);margin-top:.3rem" id="geoDetectedHint">📡 Detecting your location…</div>
+          </div>
+          <div class="form-group">
+            <label>Town / City</label>
+            <input type="text" placeholder="e.g. Manchester" id="adCity">
+          </div>
+        </div>
+
+        <!-- SECTION 2: PRODUCT INFO -->
+        <div class="form-section">
+          <div class="form-section-title"><span>2</span> Product Details</div>
+          <div class="form-row">
+            <div class="form-group">
+              <label>Product Type <span style="color:var(--red)">*</span></label>
+              <select id="adType">
+                <option value="">— Select Type —</option>
+                <option>Car / Buggy</option>
+                <option>Aeroplane</option>
+                <option>Boat</option>
+                <option>Drone / FPV</option>
+                <option>Helicopter</option>
+                <option>Rock Crawler</option>
+                <option>Part / Accessory</option>
+              </select>
+            </div>
+            <div class="form-group">
+              <label>Product Class</label>
+              <select id="adClass">
+                <option value="">— Select Class —</option>
+                <option>Electric</option>
+                <option>Nitro / Petrol</option>
+                <option>RTR (Ready to Run)</option>
+                <option>Kit (Build It Yourself)</option>
+                <option>ARF / PNP</option>
+              </select>
+            </div>
+          </div>
+          <div class="form-group">
+            <label>Advert Title <span style="color:var(--red)">*</span></label>
+            <input type="text" id="adTitle" placeholder="e.g. Traxxas Slash 4x4 — 1:10 Brushless Electric Buggy" maxlength="80" oninput="updateCount('adTitle','titleCount',80)">
+            <div class="char-count" id="titleCount">0 / 80</div>
+          </div>
+          <div class="form-group">
+            <label>Product Description <span style="color:var(--red)">*</span></label>
+            <textarea id="adDesc" placeholder="Describe your item — condition, age, included accessories, reason for selling…" maxlength="1000" rows="5" oninput="updateCount('adDesc','descCount',1000)"></textarea>
+            <div class="char-count" id="descCount">0 / 1000 characters</div>
+          </div>
+          <div class="form-row">
+            <div class="form-group">
+              <label>Condition</label>
+              <select>
+                <option>New (Sealed)</option>
+                <option>New (Open Box)</option>
+                <option>Used — Like New</option>
+                <option>Used — Good</option>
+                <option>Used — Fair</option>
+                <option>For Parts</option>
+              </select>
+            </div>
+            <div class="form-group">
+              <label>Scale / Size</label>
+              <input type="text" placeholder="e.g. 1:10, 1400mm, 450 size">
+            </div>
+          </div>
+        </div>
+
+        <!-- SECTION 3: PHOTOS -->
+        <div class="form-section">
+          <div class="form-section-title"><span>3</span> Photos</div>
+          <div class="photo-upload" onclick="toast('Photo upload coming soon — add up to 24 photos','info')">
+            <div style="font-size:2.5rem;margin-bottom:.5rem">📷</div>
+            <div style="font-weight:600;margin-bottom:.25rem">Drag & drop photos here</div>
+            <div style="font-size:.82rem;color:var(--muted)">or click to browse — up to 24 photos + 1 video</div>
+          </div>
+          <div class="photo-grid mt-2">
+            <div class="photo-slot filled">🏎<div>Main</div></div>
+            <div class="photo-slot">+</div>
+            <div class="photo-slot">+</div>
+            <div class="photo-slot">+</div>
+            <div class="photo-slot">+</div>
+          </div>
+        </div>
+
+        <!-- SECTION 4: PRICING -->
+        <div class="form-section">
+          <div class="form-section-title"><span>4</span> Pricing</div>
+          <div class="form-row">
+            <div class="form-group">
+              <label>Currency</label>
+              <select id="adCurrency">
+                <option>GBP (£)</option>
+                <option>USD ($)</option>
+                <option>AUD (A$)</option>
+                <option>EUR (€)</option>
+                <option>CAD (C$)</option>
+              </select>
+            </div>
+            <div class="form-group">
+              <label>Asking Price <span style="color:var(--red)">*</span></label>
+              <input type="number" id="adPrice" placeholder="0.00" min="1" oninput="updateFeePreview()">
+            </div>
+          </div>
+          <div style="background:rgba(232,0,29,.07);border:1px solid rgba(232,0,29,.2);border-radius:var(--radius);padding:1rem;margin-top:.5rem">
+            <div style="display:flex;justify-content:space-between;font-size:.88rem;margin-bottom:.4rem">
+              <span style="color:var(--muted)">Your asking price</span>
+              <span id="feePreviewPrice" style="font-weight:700">£0.00</span>
+            </div>
+            <div style="display:flex;justify-content:space-between;font-size:.88rem;margin-bottom:.4rem">
+              <span style="color:var(--muted)">RC Bay fee (10%)</span>
+              <span id="feePreviewFee" style="color:var(--red);font-weight:700">£0.00</span>
+            </div>
+            <div style="font-size:.75rem;color:var(--muted)">💡 The RC Bay fee is charged when you publish. Your ad will go live instantly after payment.</div>
+          </div>
+        </div>
+
+        <!-- SECTION 5: CONTACT -->
+        <div class="form-section">
+          <div class="form-section-title"><span>5</span> Contact Preferences</div>
+          <p style="color:var(--muted);font-size:.85rem;margin-bottom:1rem">Your email is never shown publicly. Buyers message you through RC Bay's secure system.</p>
+          <div class="form-row">
+            <div class="form-group">
+              <label>Your Name</label>
+              <input type="text" id="contactName" placeholder="Auto-filled when logged in">
+            </div>
+            <div class="form-group">
+              <label>Email</label>
+              <input type="email" id="contactEmail" placeholder="Auto-filled when logged in">
+            </div>
+          </div>
+          <div class="form-group">
+            <label>Phone (optional — not shown publicly)</label>
+            <input type="tel" placeholder="+44 7000 000000">
+          </div>
+        </div>
+
+        <div style="display:flex;gap:1rem;justify-content:flex-end">
+          <button class="btn btn-outline" onclick="showPage('home')">Cancel</button>
+          <!-- Calls validation + auth gate + payment modal -->
+          <button class="btn btn-primary btn-lg" onclick="openPayModal()">Continue to Payment →</button>
+        </div>
+      </div>
+
+      <!-- SIDEBAR -->
+      <div style="position:sticky;top:80px">
+        <div style="background:var(--navy-light);border:1px solid var(--border);border-radius:var(--radius);padding:1.25rem;margin-bottom:1rem">
+          <h4 style="font-weight:700;margin-bottom:.75rem">💡 Tips for a great ad</h4>
+          <ul style="list-style:none;display:flex;flex-direction:column;gap:.6rem">
+            <li style="font-size:.82rem;color:var(--muted);display:flex;gap:.5rem"><span>📸</span>Add at least 5 clear photos from different angles</li>
+            <li style="font-size:.82rem;color:var(--muted);display:flex;gap:.5rem"><span>🏷</span>Include brand, model and scale in the title</li>
+            <li style="font-size:.82rem;color:var(--muted);display:flex;gap:.5rem"><span>📋</span>List what's included (transmitter, battery, charger…)</li>
+            <li style="font-size:.82rem;color:var(--muted);display:flex;gap:.5rem"><span>💰</span>Research similar items before pricing</li>
+          </ul>
+        </div>
+        <div style="background:var(--navy-light);border:1px solid var(--border);border-radius:var(--radius);padding:1.25rem">
+          <h4 style="font-weight:700;margin-bottom:.5rem">Fee Preview</h4>
+          <div style="font-family:var(--font-display);font-size:2.5rem;color:var(--red);margin:.5rem 0" id="sidebarFee">£0.00</div>
+          <div style="font-size:.78rem;color:var(--muted)">10% of your asking price — charged on publish</div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- =======================================================
+     PAGE: VIEW ADVERT
+     ======================================================= -->
+<div class="page" id="page-advert">
+  <div style="background:var(--navy-mid);border-bottom:1px solid var(--border);padding:1rem 0">
+    <div class="container">
+      <div style="display:flex;align-items:center;gap:.5rem;color:var(--muted);font-size:.82rem">
+        <span onclick="showPage('home')" style="cursor:pointer">Home</span> ›
+        <span onclick="showPage('products')" style="cursor:pointer">All RC Products</span> ›
+        <span>Cars & Buggies</span> ›
+        <span style="color:var(--text)">Traxxas Slash 4x4</span>
+      </div>
+    </div>
+  </div>
+  <div class="container section">
+    <div class="advert-view">
+      <!-- LEFT -->
+      <div>
+        <div class="advert-gallery">
+          <div class="advert-main-img">
+            <div style="position:absolute;inset:0;background:radial-gradient(ellipse at center,rgba(232,0,29,.15) 0%,transparent 70%)"></div>
+            🏎
+          </div>
+          <div class="advert-thumbs">
+            <div class="advert-thumb active">🏎</div>
+            <div class="advert-thumb">📸</div>
+            <div class="advert-thumb">📸</div>
+            <div class="advert-thumb">📸</div>
+            <div class="advert-thumb">📸</div>
+          </div>
+        </div>
+
+        <div class="advert-details">
+          <h2 style="font-family:var(--font-display);font-size:2rem;margin-bottom:1rem">About This Item</h2>
+          <p style="color:var(--muted);font-size:.92rem;line-height:1.75">The Traxxas Slash 4x4 LCG is the ultimate short-course truck for racing. Featuring a brushless Velineon system, waterproof electronics, and Traxxas Stability Management. Only used for 3 sessions on our private track. Comes with Traxxas TQi 2.4GHz transmitter, original Traxxas charger, and 2x 3S LiPo batteries. Selling due to upgrade to 1:8 scale.</p>
+          <div class="spec-grid">
+            <div class="spec-item"><div class="spec-label">Scale</div><div class="spec-value">1:10</div></div>
+            <div class="spec-item"><div class="spec-label">Drive</div><div class="spec-value">4WD</div></div>
+            <div class="spec-item"><div class="spec-label">Power</div><div class="spec-value">Brushless Electric</div></div>
+            <div class="spec-item"><div class="spec-label">Body Type</div><div class="spec-value">Short-Course Truck</div></div>
+            <div class="spec-item"><div class="spec-label">Condition</div><div class="spec-value">Used — Like New</div></div>
+            <div class="spec-item"><div class="spec-label">RTR</div><div class="spec-value">Yes — Full Kit</div></div>
+            <div class="spec-item"><div class="spec-label">Brand</div><div class="spec-value">Traxxas</div></div>
+            <div class="spec-item"><div class="spec-label">Model</div><div class="spec-value">Slash 4x4 LCG</div></div>
+          </div>
+        </div>
+      </div>
+
+      <!-- RIGHT SIDEBAR -->
+      <div>
+        <div class="advert-sidebar-card">
+          <div style="display:flex;justify-content:space-between;align-items:start">
+            <div>
+              <div style="font-size:.75rem;color:var(--muted);margin-bottom:.25rem">Asking Price</div>
+              <div class="advert-price-big lc-price" data-gbp="549">£549</div>
+              <div class="advert-commission">Buyer pays listing price. RC Bay charges<br>sellers a 10% publication fee.</div>
+            </div>
+            <div class="badge badge-red">Live</div>
+          </div>
+          <button class="btn btn-primary btn-lg w-full mt-3" onclick="document.getElementById('msgModal').classList.remove('hidden')">
+            📨 Message Seller
+          </button>
+          <button class="btn btn-outline w-full mt-2" onclick="toast('Saved to watchlist!','success')">
+            ❤️ Save to Watchlist
+          </button>
+          <div class="seller-block">
+            <div class="seller-ava">JK</div>
+            <div>
+              <div class="seller-name">James K.</div>
+              <div class="stars">★★★★★</div>
+              <div class="seller-since">Member since 2022 · 14 ads sold</div>
+            </div>
+          </div>
+        </div>
+
+        <div class="advert-sidebar-card">
+          <h4 style="font-weight:700;margin-bottom:.75rem">📍 Item Location</h4>
+          <div style="font-size:.9rem;color:var(--muted)">Manchester, United Kingdom</div>
+          <div style="background:var(--navy-mid);border-radius:8px;height:120px;margin-top:.75rem;display:flex;align-items:center;justify-content:center;color:var(--muted);font-size:.85rem;border:1px solid var(--border)">🗺 Map View</div>
+        </div>
+
+        <div class="advert-sidebar-card">
+          <h4 style="font-weight:700;margin-bottom:.75rem">⚠️ Safety Tips</h4>
+          <ul style="list-style:none;display:flex;flex-direction:column;gap:.5rem">
+            <li style="font-size:.78rem;color:var(--muted);display:flex;gap:.4rem"><span>✓</span>Always inspect item before paying</li>
+            <li style="font-size:.78rem;color:var(--muted);display:flex;gap:.4rem"><span>✓</span>Meet in a public place if collecting</li>
+            <li style="font-size:.78rem;color:var(--muted);display:flex;gap:.4rem"><span>✓</span>Use RC Bay messaging — never share personal email</li>
+            <li style="font-size:.78rem;color:var(--muted);display:flex;gap:.4rem"><span>✓</span>Report suspicious behaviour to admin</li>
+          </ul>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- =======================================================
+     PAGE: ACCOUNT
+     ======================================================= -->
+<div class="page" id="page-account">
+  <div style="background:var(--navy-mid);border-bottom:1px solid var(--border);padding:2rem 0">
+    <div class="container">
+      <h1 style="font-family:var(--font-display);font-size:2.8rem">Your Account</h1>
+      <p style="color:var(--muted);margin-top:.4rem">Manage your listings, messages, and settings</p>
+    </div>
+  </div>
+  <div class="container section">
+    <div class="account-grid">
+      <div>
+        <div class="account-sidebar">
+          <div class="account-profile">
+            <div class="account-ava" id="accountAva">EL</div>
+            <div style="font-weight:700" id="accountName">El (Agency)</div>
+            <div style="font-size:.75rem;color:var(--muted)">Member since Oct 2025</div>
+            <div class="stars" style="margin-top:.4rem">★★★★★ 4.9</div>
+          </div>
+          <div class="account-nav-item active" onclick="switchAccountTab(this,'tab-listings')">📋 My Listings</div>
+          <div class="account-nav-item" onclick="switchAccountTab(this,'tab-messages')">📨 Messages</div>
+          <div class="account-nav-item" onclick="switchAccountTab(this,'tab-payments')">💳 Payment History</div>
+          <div class="account-nav-item" onclick="switchAccountTab(this,'tab-watchlist')">❤️ Watchlist</div>
+          <div class="account-nav-item" onclick="switchAccountTab(this,'tab-profile')">👤 Personal Details</div>
+          <div class="account-nav-item" onclick="switchAccountTab(this,'tab-settings')">⚙️ Notifications</div>
+          <div class="account-nav-item" style="color:var(--red)" onclick="doLogout()">🚪 Sign Out</div>
+        </div>
+      </div>
+      <div>
+        <div class="account-section">
+          <div class="stats-grid">
+            <div class="stat-card"><div class="num">3</div><div class="label">Live Ads</div></div>
+            <div class="stat-card"><div class="num">12</div><div class="label">Total Sold</div></div>
+            <div class="stat-card"><div class="num lc-price" data-gbp="1240">£1,240</div><div class="label">Earned</div></div>
+          </div>
+        </div>
+
+        <div id="tab-listings" class="account-section">
+          <h3>📋 My Active Listings</h3>
+          <div class="my-ad-card">
+            <div class="my-ad-img">🏎</div>
+            <div class="my-ad-info">
+              <div class="my-ad-title">Traxxas Slash 4x4 LCG — Brushless</div>
+              <div class="my-ad-price lc-price" data-gbp="549">£549</div>
+              <div class="badge badge-green text-xs">Live</div>
+            </div>
+            <div class="my-ad-actions">
+              <button class="btn btn-outline btn-sm" onclick="showPage('advert')">View</button>
+              <button class="btn btn-outline btn-sm" onclick="document.getElementById('soldModal').classList.remove('hidden')">Sold</button>
+            </div>
+          </div>
+          <div class="my-ad-card">
+            <div class="my-ad-img">🔋</div>
+            <div class="my-ad-info">
+              <div class="my-ad-title">Tattu R-Line 4S 5x Pack</div>
+              <div class="my-ad-price lc-price" data-gbp="89">£89</div>
+              <div class="badge badge-green text-xs">Live</div>
+            </div>
+            <div class="my-ad-actions">
+              <button class="btn btn-outline btn-sm" onclick="showPage('advert')">View</button>
+              <button class="btn btn-outline btn-sm" onclick="document.getElementById('soldModal').classList.remove('hidden')">Sold</button>
+            </div>
+          </div>
+          <button class="btn btn-primary mt-3" onclick="requireAuthThenCreate()">+ Post New Ad</button>
+        </div>
+
+        <div id="tab-messages" class="account-section hidden">
+          <h3>📨 Messages</h3>
+          <div style="display:flex;flex-direction:column;gap:.5rem;margin-top:.5rem">
+            <div style="background:var(--navy-mid);border-radius:8px;padding:1rem;cursor:pointer" onclick="toast('Opening conversation…','info')">
+              <div style="display:flex;justify-content:space-between;margin-bottom:.25rem">
+                <span style="font-weight:600;font-size:.9rem">Buyer: Mike T.</span>
+                <span class="text-xs text-muted">2h ago</span>
+              </div>
+              <div class="text-sm text-muted">Re: Traxxas Slash — "Is it still available?"</div>
+            </div>
+            <div style="background:var(--navy-mid);border-radius:8px;padding:1rem;cursor:pointer" onclick="toast('Opening conversation…','info')">
+              <div style="display:flex;justify-content:space-between;margin-bottom:.25rem">
+                <span style="font-weight:600;font-size:.9rem">Buyer: Sarah L.</span>
+                <span class="text-xs text-muted">1d ago</span>
+              </div>
+              <div class="text-sm text-muted">Re: Battery Pack — "Will you take £75?"</div>
+            </div>
+          </div>
+        </div>
+
+        <div id="tab-payments" class="account-section hidden">
+          <h3>💳 Payment History</h3>
+          <table class="data-table" style="margin-top:.5rem">
+            <thead><tr><th>Date</th><th>Item</th><th>Ad Value</th><th>Fee Paid</th><th>Status</th></tr></thead>
+            <tbody>
+              <tr><td>20 Oct 2025</td><td>Traxxas Slash 4x4</td><td>£549</td><td>£54.90</td><td><span class="badge badge-green text-xs">Paid</span></td></tr>
+              <tr><td>19 Oct 2025</td><td>Tattu Battery Pack</td><td>£89</td><td>£8.90</td><td><span class="badge badge-green text-xs">Paid</span></td></tr>
+              <tr><td>2 Sep 2025</td><td>Axial SCX10</td><td>£340</td><td>£34.00</td><td><span class="badge badge-gray text-xs">Archived</span></td></tr>
+            </tbody>
+          </table>
+        </div>
+
+        <div id="tab-watchlist" class="account-section hidden">
+          <h3>❤️ Saved Items</h3>
+          <div class="my-ad-card">
+            <div class="my-ad-img">✈️</div>
+            <div class="my-ad-info">
+              <div class="my-ad-title">FMS FW-190 1400mm Warbird RTF</div>
+              <div class="my-ad-price lc-price" data-gbp="289">£289</div>
+              <div class="text-xs text-muted">Posted 5h ago · London</div>
+            </div>
+            <div class="my-ad-actions">
+              <button class="btn btn-primary btn-sm" onclick="showPage('advert')">View</button>
+            </div>
+          </div>
+        </div>
+
+        <div id="tab-profile" class="account-section hidden">
+          <h3>👤 Personal Details</h3>
+          <div class="form-row mt-2">
+            <div class="form-group"><label>First Name</label><input type="text" value="El"></div>
+            <div class="form-group"><label>Last Name</label><input type="text" value="(Agency)"></div>
+          </div>
+          <div class="form-group"><label>Email</label><input type="email" value="el@agency.co.uk"></div>
+          <div class="form-group"><label>Phone</label><input type="tel" value="+44 7000 000000"></div>
+          <div class="form-group"><label>Location</label><input type="text" value="United Kingdom"></div>
+          <button class="btn btn-primary" onclick="toast('Profile updated!','success')">Save Changes</button>
+        </div>
+
+        <div id="tab-settings" class="account-section hidden">
+          <h3>⚙️ Notification Preferences</h3>
+          <div style="display:flex;flex-direction:column;gap:.75rem;margin-top:1rem">
+            <div style="display:flex;justify-content:space-between;align-items:center;background:var(--navy-mid);border-radius:8px;padding:.85rem 1rem">
+              <div><div style="font-weight:600;font-size:.9rem">New message received</div><div class="text-xs text-muted">Email when a buyer messages you</div></div>
+              <div style="background:var(--green);width:40px;height:22px;border-radius:50px;position:relative;cursor:pointer" onclick="toast('Setting saved','success')"><div style="position:absolute;right:3px;top:3px;width:16px;height:16px;border-radius:50%;background:#fff"></div></div>
+            </div>
+            <div style="display:flex;justify-content:space-between;align-items:center;background:var(--navy-mid);border-radius:8px;padding:.85rem 1rem">
+              <div><div style="font-weight:600;font-size:.9rem">Ad expiry reminder</div><div class="text-xs text-muted">7 days before your ad expires</div></div>
+              <div style="background:var(--green);width:40px;height:22px;border-radius:50px;position:relative;cursor:pointer" onclick="toast('Setting saved','success')"><div style="position:absolute;right:3px;top:3px;width:16px;height:16px;border-radius:50%;background:#fff"></div></div>
+            </div>
+            <div style="display:flex;justify-content:space-between;align-items:center;background:var(--navy-mid);border-radius:8px;padding:.85rem 1rem">
+              <div><div style="font-weight:600;font-size:.9rem">RC Bay newsletter</div><div class="text-xs text-muted">Monthly updates and featured listings</div></div>
+              <div style="background:var(--steel);width:40px;height:22px;border-radius:50px;position:relative;cursor:pointer" onclick="toast('Setting saved','success')"><div style="position:absolute;left:3px;top:3px;width:16px;height:16px;border-radius:50%;background:#fff"></div></div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- =======================================================
+     PAGE: ADMIN
+     ======================================================= -->
+<div class="page" id="page-admin">
+  <div class="admin-topbar">
+    <div class="container admin-topbar-inner">
+      <span style="color:var(--red);font-weight:700">🔐 ADMIN PANEL — RC Bay Control Centre</span>
+      <span style="color:var(--muted)">Logged in as: <strong style="color:var(--text)">admin@rcbay.com</strong></span>
+    </div>
+  </div>
+  <div style="background:var(--navy-mid);border-bottom:1px solid var(--border);padding:1.5rem 0">
+    <div class="container">
+      <h1 style="font-family:var(--font-display);font-size:2.5rem">Admin Dashboard</h1>
+      <p style="color:var(--muted);font-size:.85rem">Full control over all user accounts, listings, and payments.</p>
+    </div>
+  </div>
+  <div class="container section">
+    <div class="admin-grid">
+      <div>
+        <div class="admin-sidebar">
+          <div style="padding:1rem;font-size:.72rem;text-transform:uppercase;letter-spacing:.1em;color:var(--muted);font-weight:700">Navigation</div>
+          <div class="admin-nav-item active" onclick="switchAdminTab(this,'atab-dash')">📊 Dashboard</div>
+          <div class="admin-nav-item" onclick="switchAdminTab(this,'atab-users')">👥 All Users</div>
+          <div class="admin-nav-item" onclick="switchAdminTab(this,'atab-listings')">📋 All Listings</div>
+          <div class="admin-nav-item" onclick="switchAdminTab(this,'atab-payments')">💰 Payments</div>
+          <div class="admin-nav-item" onclick="switchAdminTab(this,'atab-messages')">📨 Messages</div>
+          <div class="admin-nav-item" onclick="switchAdminTab(this,'atab-geo')">🌍 Geolocation</div>
+          <div class="admin-nav-item" onclick="switchAdminTab(this,'atab-settings')">⚙️ Settings</div>
+        </div>
+      </div>
+      <div>
+        <div class="admin-kpi">
+          <div class="kpi-card"><div class="kpi-num">4,218</div><div class="kpi-label">Live Listings</div><div class="kpi-delta up">↑ +124 this week</div></div>
+          <div class="kpi-card"><div class="kpi-num">12,041</div><div class="kpi-label">Total Users</div><div class="kpi-delta up">↑ +312 this week</div></div>
+          <div class="kpi-card"><div class="kpi-num lc-price" data-gbp="8240">£8,240</div><div class="kpi-label">Fees Collected</div><div class="kpi-delta up">↑ +£1,200 MTD</div></div>
+          <div class="kpi-card"><div class="kpi-num">98.2%</div><div class="kpi-label">Uptime</div><div class="kpi-delta up">↑ Stable</div></div>
+        </div>
+
+        <div id="atab-dash" class="account-section">
+          <h3>📊 Recent Activity</h3>
+          <table class="data-table mt-2">
+            <thead><tr><th>Time</th><th>Event</th><th>User</th><th>Value</th><th>Action</th></tr></thead>
+            <tbody>
+              <tr><td class="text-xs text-muted">2 min ago</td><td>New listing published</td><td>James K.</td><td>£549</td><td><button class="btn btn-outline btn-sm" onclick="showPage('advert')">View</button></td></tr>
+              <tr><td class="text-xs text-muted">15 min ago</td><td>Payment received</td><td>Sarah L.</td><td>£28.90 fee</td><td><button class="btn btn-outline btn-sm" onclick="toast('Receipt opened','info')">Receipt</button></td></tr>
+              <tr><td class="text-xs text-muted">1h ago</td><td>User registered</td><td>mike.t@email.com</td><td>—</td><td><button class="btn btn-outline btn-sm" onclick="toast('Profile opened','info')">Profile</button></td></tr>
+              <tr><td class="text-xs text-muted">3h ago</td><td>Ad marked sold</td><td>David R.</td><td>£289</td><td><button class="btn btn-outline btn-sm" onclick="toast('Archived','info')">Archive</button></td></tr>
+              <tr><td class="text-xs text-muted">5h ago</td><td>Listing flagged</td><td>Unknown</td><td>—</td><td><button class="btn btn-primary btn-sm" onclick="toast('Under review','info')">Review</button></td></tr>
+            </tbody>
+          </table>
+        </div>
+
+        <div id="atab-users" class="account-section hidden">
+          <h3>👥 All Users</h3>
+          <table class="data-table mt-2">
+            <thead><tr><th>User</th><th>Email</th><th>Country</th><th>Listings</th><th>Status</th><th>Action</th></tr></thead>
+            <tbody>
+              <tr><td>James K.</td><td>james@k.com</td><td>🇬🇧 UK</td><td>3</td><td><span class="status-dot live"></span>Active</td><td><button class="btn btn-outline btn-sm" onclick="toast('User profile opened','info')">View</button></td></tr>
+              <tr><td>Sarah L.</td><td>sarah@l.com</td><td>🇺🇸 US</td><td>1</td><td><span class="status-dot live"></span>Active</td><td><button class="btn btn-outline btn-sm" onclick="toast('User profile opened','info')">View</button></td></tr>
+              <tr><td>Flagged User</td><td>bad@actor.com</td><td>🇩🇪 DE</td><td>0</td><td><span class="status-dot suspended"></span>Flagged</td><td><button class="btn btn-sm" style="background:var(--red);color:#fff;border-radius:8px;border:none" onclick="toast('User suspended','error')">Suspend</button></td></tr>
+            </tbody>
+          </table>
+        </div>
+
+        <div id="atab-listings" class="account-section hidden">
+          <h3>📋 All Listings</h3>
+          <table class="data-table mt-2">
+            <thead><tr><th>Title</th><th>Seller</th><th>Price</th><th>Fee</th><th>Status</th><th>Action</th></tr></thead>
+            <tbody>
+              <tr><td>Traxxas Slash 4x4</td><td>James K.</td><td>£549</td><td>£54.90</td><td><span class="status-dot live"></span>Live</td><td><button class="btn btn-outline btn-sm" onclick="showPage('advert')">View</button></td></tr>
+              <tr><td>FMS FW-190 Warbird</td><td>Sarah L.</td><td>£289</td><td>£28.90</td><td><span class="status-dot live"></span>Live</td><td><button class="btn btn-outline btn-sm" onclick="showPage('advert')">View</button></td></tr>
+              <tr><td>Proboat Blackjack 42"</td><td>Mike T.</td><td>£420</td><td>£42.00</td><td><span class="status-dot sold"></span>Sold</td><td><button class="btn btn-outline btn-sm" onclick="toast('Archived','info')">Archive</button></td></tr>
+            </tbody>
+          </table>
+        </div>
+
+        <div id="atab-payments" class="account-section hidden">
+          <h3>💰 All Payments</h3>
+          <table class="data-table mt-2">
+            <thead><tr><th>Date</th><th>User</th><th>Ad Value</th><th>Fee Collected</th><th>Method</th><th>Status</th></tr></thead>
+            <tbody>
+              <tr><td>20 Oct</td><td>James K.</td><td>£549</td><td>£54.90</td><td>Card</td><td><span class="badge badge-green text-xs">Paid</span></td></tr>
+              <tr><td>19 Oct</td><td>Sarah L.</td><td>£289</td><td>£28.90</td><td>PayPal</td><td><span class="badge badge-green text-xs">Paid</span></td></tr>
+              <tr><td>18 Oct</td><td>Mike T.</td><td>£420</td><td>£42.00</td><td>Bank</td><td><span class="badge badge-green text-xs">Paid</span></td></tr>
+            </tbody>
+          </table>
+          <div style="margin-top:1.5rem;padding:1rem;background:var(--navy-mid);border-radius:var(--radius);display:flex;justify-content:space-between;align-items:center">
+            <span style="font-weight:700">Total Collected (Oct 2025)</span>
+            <span style="font-family:var(--font-display);font-size:1.8rem;color:var(--green)">£8,240.00</span>
+          </div>
+        </div>
+
+        <div id="atab-messages" class="account-section hidden">
+          <h3>📨 All Messages</h3>
+          <table class="data-table">
+            <thead><tr><th>From</th><th>To</th><th>Re: Listing</th><th>Time</th><th>Action</th></tr></thead>
+            <tbody>
+              <tr><td>Mike T.</td><td>James K.</td><td>Traxxas Slash 4x4</td><td class="text-xs text-muted">2h ago</td><td><button class="btn btn-outline btn-sm" onclick="toast('Thread opened','info')">View</button></td></tr>
+              <tr><td>Guest User</td><td>Sarah L.</td><td>FMS FW-190</td><td class="text-xs text-muted">4h ago</td><td><button class="btn btn-outline btn-sm" onclick="toast('Thread opened','info')">View</button></td></tr>
+              <tr><td>Flagged User</td><td>David R.</td><td>Proboat Blackjack</td><td class="text-xs text-muted">1d ago</td><td><button class="btn btn-sm" style="background:var(--red);color:#fff;border-radius:8px;border:none" onclick="toast('Message removed','error')">Flag</button></td></tr>
+            </tbody>
+          </table>
+        </div>
+
+        <div id="atab-geo" class="account-section hidden">
+          <h3>🌍 Geolocation Settings</h3>
+          <p style="color:var(--muted);font-size:.85rem;margin:.5rem 0 1.25rem">Control which regions can access RC Bay and which currency each region sees.</p>
+          <table class="data-table">
+            <thead><tr><th>Region</th><th>Currency</th><th>Status</th><th>Visitors</th><th>Toggle</th></tr></thead>
+            <tbody>
+              <tr><td>🇬🇧 United Kingdom</td><td>GBP (£)</td><td><span class="status-dot live"></span>Active</td><td>8,240</td><td><button class="btn btn-green btn-sm">Enabled</button></td></tr>
+              <tr><td>🇺🇸 United States</td><td>USD ($)</td><td><span class="status-dot live"></span>Active</td><td>2,190</td><td><button class="btn btn-green btn-sm">Enabled</button></td></tr>
+              <tr><td>🇦🇺 Australia</td><td>AUD (A$)</td><td><span class="status-dot live"></span>Active</td><td>810</td><td><button class="btn btn-green btn-sm">Enabled</button></td></tr>
+              <tr><td>🇨🇦 Canada</td><td>CAD (C$)</td><td><span class="status-dot live"></span>Active</td><td>420</td><td><button class="btn btn-green btn-sm">Enabled</button></td></tr>
+              <tr><td>🇯🇵 Japan</td><td>JPY (¥)</td><td><span class="status-dot pending"></span>Pending</td><td>—</td><td><button class="btn btn-outline btn-sm" onclick="toast('Japan region enabled','success')">Enable</button></td></tr>
+              <tr><td>🇪🇺 Europe</td><td>EUR (€)</td><td><span class="status-dot live"></span>Active</td><td>1,380</td><td><button class="btn btn-green btn-sm">Enabled</button></td></tr>
+            </tbody>
+          </table>
+          <div style="margin-top:1.5rem;background:var(--navy-mid);border-radius:var(--radius);padding:1.25rem">
+            <h4 style="font-weight:700;margin-bottom:.75rem">Fee Settings</h4>
+            <div style="display:flex;gap:1rem;align-items:center;flex-wrap:wrap">
+              <div class="form-group" style="margin:0;flex:1"><label>Platform Fee %</label><input type="number" value="10" min="1" max="50"></div>
+              <button class="btn btn-primary mt-3" onclick="toast('Fee rate updated!','success')">Save</button>
+            </div>
+          </div>
+        </div>
+
+        <div id="atab-settings" class="account-section hidden">
+          <h3>⚙️ System Settings</h3>
+          <div style="display:flex;flex-direction:column;gap:.75rem;margin-top:1rem">
+            <div style="background:var(--navy-mid);border-radius:8px;padding:1rem;display:flex;justify-content:space-between;align-items:center">
+              <div><div style="font-weight:600">Maintenance Mode</div><div class="text-xs text-muted">Take site offline for updates</div></div>
+              <div style="background:var(--steel);width:40px;height:22px;border-radius:50px;position:relative;cursor:pointer;border:1px solid var(--border)" onclick="toast('Maintenance mode toggled','info')"><div style="position:absolute;left:3px;top:3px;width:16px;height:16px;border-radius:50%;background:#fff"></div></div>
+            </div>
+            <div style="background:var(--navy-mid);border-radius:8px;padding:1rem;display:flex;justify-content:space-between;align-items:center">
+              <div><div style="font-weight:600">Auto-approve new listings</div><div class="text-xs text-muted">Listings go live without manual review</div></div>
+              <div style="background:var(--green);width:40px;height:22px;border-radius:50px;position:relative;cursor:pointer" onclick="toast('Setting saved','success')"><div style="position:absolute;right:3px;top:3px;width:16px;height:16px;border-radius:50%;background:#fff"></div></div>
+            </div>
+            <div style="background:var(--navy-mid);border-radius:8px;padding:1rem;display:flex;justify-content:space-between;align-items:center">
+              <div><div style="font-weight:600">Email notifications to admin</div><div class="text-xs text-muted">Get alerted on new registrations and payments</div></div>
+              <div style="background:var(--green);width:40px;height:22px;border-radius:50px;position:relative;cursor:pointer" onclick="toast('Setting saved','success')"><div style="position:absolute;right:3px;top:3px;width:16px;height:16px;border-radius:50%;background:#fff"></div></div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ===== FOOTER ===== -->
+<footer>
+  <div class="container">
+    <div class="footer-grid">
+      <div class="footer-brand">
+        <div class="logo" style="font-size:1.5rem;margin-bottom:.5rem">RC<span class="logo-dot">.</span>BAY</div>
+        <p>The UK's dedicated marketplace for remote control enthusiasts. Buy and sell RC cars, planes, boats, drones and more.</p>
+        <div style="display:flex;gap:.5rem;margin-top:.75rem">
+          <div class="badge badge-gray">🇬🇧 UK Based</div>
+          <div class="badge badge-gray">🔐 Secure</div>
+        </div>
+      </div>
+      <div class="footer-col">
+        <h5>Buy</h5>
+        <a href="#" onclick="showPage('products')">Browse All RC</a>
+        <a href="#" onclick="showPage('products')">Cars & Buggies</a>
+        <a href="#" onclick="showPage('products')">Aeroplanes</a>
+        <a href="#" onclick="showPage('products')">Drones & FPV</a>
+        <a href="#" onclick="showPage('products')">Parts & Accessories</a>
+      </div>
+      <div class="footer-col">
+        <h5>Sell</h5>
+        <a href="#" onclick="requireAuthThenCreate()">Post an Ad</a>
+        <a href="#">Pricing & Fees</a>
+        <a href="#">Seller Guide</a>
+        <a href="#" onclick="showPage('account')">My Listings</a>
+      </div>
+      <div class="footer-col">
+        <h5>Help</h5>
+        <a href="#">Help Centre</a>
+        <a href="#">Contact Us</a>
+        <a href="#">Privacy Policy</a>
+        <a href="#">Terms of Service</a>
+        <a href="#">Sitemap</a>
+      </div>
+    </div>
+    <div class="footer-bottom">
+      <span>© 2025 RC Bay Ltd. All rights reserved.</span>
+      <span>Built for RC enthusiasts by RC enthusiasts 🏎</span>
+    </div>
+  </div>
+</footer>
+
+<script src="app.js"></script>
+
+
+<script>
+/* ============================================================
+   RC BAY — app.js
+   Complete JavaScript — all fixes + new features:
+   ✅ Auth system (Login / Register modal)
+   ✅ Auth gate on "Post Ad" / "Sell an Item"
+   ✅ Dynamic currency in payment modal & fee preview
+   ✅ Form validation before payment
+   ✅ Geo → form region sync
+   ✅ Mobile hamburger menu
+   ============================================================ */
+
+/* ===================================================
+   STATE
+   =================================================== */
+const state = {
+  isLoggedIn: false,
+  user: null,                // { name, email, initials }
+  currency: { key: 'gbp', symbol: '£', label: 'GBP £', flag: '🇬🇧' },
+  feePercent: 0.10,
+};
+
+/* ===================================================
+   PAGE NAVIGATION
+   =================================================== */
+function showPage(name) {
+  document.querySelectorAll('.page').forEach(p => p.classList.remove('active'));
+  document.querySelectorAll('.nav-link').forEach(l => l.classList.remove('active'));
+
+  const pg = document.getElementById('page-' + name);
+  if (pg) pg.classList.add('active');
+
+  const nl = document.getElementById('nav-' + name);
+  if (nl) nl.classList.add('active');
+
+  window.scrollTo({ top: 0, behavior: 'smooth' });
+  closeMobileNav();
+}
+
+/* ===================================================
+   TOAST NOTIFICATIONS
+   =================================================== */
+function toast(msg, type = 'info') {
+  const icons = { success: '✅', error: '❌', info: 'ℹ️' };
+  const t = document.createElement('div');
+  t.className = `toast ${type}`;
+  t.innerHTML = `<span>${icons[type] || 'ℹ️'}</span><span>${msg}</span>`;
+  document.getElementById('toastStack').appendChild(t);
+  setTimeout(() => t.classList.add('hiding'), 3000);
+  setTimeout(() => t.remove(), 3400);
+}
+
+/* ===================================================
+   MOBILE HAMBURGER MENU  (NEW)
+   =================================================== */
+function toggleMobileNav() {
+  const btn = document.getElementById('hamburgerBtn');
+  const nav = document.getElementById('mobileNav');
+  btn.classList.toggle('open');
+  nav.classList.toggle('open');
+}
+
+function closeMobileNav() {
+  document.getElementById('hamburgerBtn')?.classList.remove('open');
+  document.getElementById('mobileNav')?.classList.remove('open');
+}
+
+/* ===================================================
+   AUTH SYSTEM  (NEW)
+   =================================================== */
+function openAuthModal(tab = 'login') {
+  switchAuthTab(tab);
+  document.getElementById('authModal').classList.remove('hidden');
+}
+
+function closeAuthModal() {
+  document.getElementById('authModal').classList.add('hidden');
+}
+
+function switchAuthTab(tab) {
+  document.querySelectorAll('.auth-tab').forEach(el => el.classList.remove('active'));
+  document.querySelectorAll('.auth-panel').forEach(el => el.classList.remove('active'));
+  document.querySelector(`.auth-tab[data-tab="${tab}"]`).classList.add('active');
+  document.getElementById('auth-' + tab).classList.add('active');
+}
+
+function doLogin() {
+  const email = document.getElementById('loginEmail').value.trim();
+  const pass  = document.getElementById('loginPass').value.trim();
+
+  if (!email || !pass) {
+    toast('Please enter your email and password.', 'error');
+    return;
+  }
+
+  // Simulate login — replace with real API call in WordPress
+  state.isLoggedIn = true;
+  state.user = {
+    name: email.split('@')[0],
+    email: email,
+    initials: email.slice(0, 2).toUpperCase(),
+  };
+
+  updateHeaderForAuth();
+  closeAuthModal();
+  toast(`Welcome back, ${state.user.name}! 👋`, 'success');
+}
+
+function doRegister() {
+  const name  = document.getElementById('regName').value.trim();
+  const email = document.getElementById('regEmail').value.trim();
+  const pass  = document.getElementById('regPass').value.trim();
+  const pass2 = document.getElementById('regPass2').value.trim();
+
+  if (!name || !email || !pass || !pass2) {
+    toast('Please fill in all fields.', 'error');
+    return;
+  }
+  if (pass !== pass2) {
+    toast('Passwords do not match.', 'error');
+    return;
+  }
+  if (pass.length < 8) {
+    toast('Password must be at least 8 characters.', 'error');
+    return;
+  }
+
+  // Simulate registration — replace with real WordPress user creation
+  state.isLoggedIn = true;
+  state.user = {
+    name: name,
+    email: email,
+    initials: name.slice(0, 2).toUpperCase(),
+  };
+
+  updateHeaderForAuth();
+  closeAuthModal();
+  toast(`Account created! Welcome to RC Bay, ${name} 🎉`, 'success');
+}
+
+function doLogout() {
+  state.isLoggedIn = false;
+  state.user = null;
+  updateHeaderForAuth();
+  showPage('home');
+  toast('You have been signed out.', 'info');
+}
+
+function updateHeaderForAuth() {
+  const btnAccount = document.getElementById('btnAccount');
+  const btnPostAd  = document.getElementById('btnPostAd');
+  const userAva    = document.getElementById('userAvaBtn');
+
+  // Mobile nav auth links
+  const mobileAuthLinks = document.querySelectorAll('#mobileNav .mobile-auth-link');
+
+  if (state.isLoggedIn) {
+    // Desktop header
+    if (btnAccount) {
+      btnAccount.textContent = 'My Account';
+      btnAccount.onclick = () => showPage('account');
+    }
+    if (btnPostAd) btnPostAd.textContent = '+ Post Ad';
+    if (userAva) {
+      userAva.textContent = state.user.initials;
+      userAva.classList.remove('hidden');
+    }
+
+    // Mobile nav — swap auth buttons
+    const mobileSignIn   = document.getElementById('mobileSignIn');
+    const mobileRegister = document.getElementById('mobileRegister');
+    const mobileAccount  = document.getElementById('mobileAccountLink');
+    const mobileLogout   = document.getElementById('mobileLogoutLink');
+
+    if (mobileSignIn)   mobileSignIn.classList.add('hidden');
+    if (mobileRegister) mobileRegister.classList.add('hidden');
+    if (mobileAccount)  mobileAccount.classList.remove('hidden');
+    if (mobileLogout)   mobileLogout.classList.remove('hidden');
+
+  } else {
+    if (userAva) userAva.classList.add('hidden');
+    if (btnAccount) {
+      btnAccount.textContent = 'Sign In';
+      btnAccount.onclick = () => openAuthModal('login');
+    }
+
+    const mobileSignIn   = document.getElementById('mobileSignIn');
+    const mobileRegister = document.getElementById('mobileRegister');
+    const mobileAccount  = document.getElementById('mobileAccountLink');
+    const mobileLogout   = document.getElementById('mobileLogoutLink');
+
+    if (mobileSignIn)   mobileSignIn.classList.remove('hidden');
+    if (mobileRegister) mobileRegister.classList.remove('hidden');
+    if (mobileAccount)  mobileAccount.classList.add('hidden');
+    if (mobileLogout)   mobileLogout.classList.add('hidden');
+  }
+}
+/* Auth-gate: used by "Post Ad" / "Sell an Item" buttons */
+function requireAuthThenCreate() {
+  if (state.isLoggedIn) {
+    showPage('create');
+  } else {
+    openAuthModal('login');
+    toast('Please log in to post an ad.', 'info');
+  }
+}
+
+/* ===================================================
+   CHAR COUNT
+   =================================================== */
+function updateCount(inputId, countId, max) {
+  const el  = document.getElementById(inputId);
+  const ct  = document.getElementById(countId);
+  const len = el.value.length;
+  ct.textContent = `${len} / ${max}${inputId === 'adDesc' ? ' characters' : ''}`;
+  ct.className = 'char-count' + (len > max * .9 ? ' warn' : '') + (len >= max ? ' over' : '');
+}
+
+/* ===================================================
+   CURRENCY HELPERS  (FIXED — no more hardcoded £)
+   =================================================== */
+const currencyMap = {
+  GB: { key: 'gbp', symbol: '£',  label: 'GBP £',  flag: '🇬🇧' },
+  US: { key: 'usd', symbol: '$',  label: 'USD $',  flag: '🇺🇸' },
+  AU: { key: 'aud', symbol: 'A$', label: 'AUD A$', flag: '🇦🇺' },
+  CA: { key: 'cad', symbol: 'C$', label: 'CAD C$', flag: '🇨🇦' },
+  JP: { key: 'jpy', symbol: '¥',  label: 'JPY ¥',  flag: '🇯🇵' },
+  DE: { key: 'eur', symbol: '€',  label: 'EUR €',  flag: '🇩🇪' },
+};
+
+// Exchange rates vs GBP base
+const rates = { gbp: 1, usd: 1.265, aud: 1.92, cad: 1.73, jpy: 191, eur: 1.16 };
+
+function convertPrice(gbpAmount, curKey) {
+  const rate = rates[curKey] || 1;
+  return gbpAmount * rate;
+}
+
+function formatPrice(amount, curKey) {
+  const sym = state.currency.symbol;
+  const decimals = curKey === 'jpy' ? 0 : 0;
+  return sym + Math.round(amount).toLocaleString();
+}
+
+// Apply converted prices to all .lc-price elements
+function applyPrices(curKey) {
+  const rate = rates[curKey] || 1;
+  const sym  = state.currency.symbol;
+  document.querySelectorAll('.lc-price').forEach(el => {
+    const base = parseFloat(el.dataset.gbp) || 0;
+    const converted = base * rate;
+    el.textContent = sym + Math.round(converted).toLocaleString();
+  });
+  // Also refresh fee preview if create page is visible
+  updateFeePreview();
+}
+
+/* ===================================================
+   FEE PREVIEW  (FIXED — dynamic currency symbol)
+   =================================================== */
+function updateFeePreview() {
+  const price = parseFloat(document.getElementById('adPrice')?.value) || 0;
+  const fee   = price * state.feePercent;
+  const sym   = state.currency.symbol;
+
+  const elPrice = document.getElementById('feePreviewPrice');
+  const elFee   = document.getElementById('feePreviewFee');
+  const elSide  = document.getElementById('sidebarFee');
+
+  if (elPrice) elPrice.textContent = sym + price.toFixed(2);
+  if (elFee)   elFee.textContent   = sym + fee.toFixed(2);
+  if (elSide)  elSide.textContent  = sym + fee.toFixed(2);
+}
+
+/* ===================================================
+   FORM VALIDATION  (NEW)
+   =================================================== */
+function validateAdForm() {
+  let valid = true;
+
+  const required = [
+    { id: 'adType',  label: 'Product Type' },
+    { id: 'adTitle', label: 'Advert Title' },
+    { id: 'adDesc',  label: 'Description' },
+    { id: 'adPrice', label: 'Asking Price' },
+  ];
+
+  // Clear previous errors
+  required.forEach(f => {
+    const el = document.getElementById(f.id);
+    if (el) el.classList.remove('error');
+  });
+
+  required.forEach(f => {
+    const el = document.getElementById(f.id);
+    if (!el) return;
+    if (!el.value || el.value.trim() === '' || el.value === '') {
+      el.classList.add('error');
+      valid = false;
+    }
+  });
+
+  // Price must be > 0
+  const priceEl = document.getElementById('adPrice');
+  if (priceEl && parseFloat(priceEl.value) <= 0) {
+    priceEl.classList.add('error');
+    valid = false;
+  }
+
+  if (!valid) {
+    toast('Please fill in all required fields (marked in red).', 'error');
+    // Scroll to first error
+    const firstErr = document.querySelector('.form-group input.error, .form-group select.error, .form-group textarea.error');
+    if (firstErr) firstErr.scrollIntoView({ behavior: 'smooth', block: 'center' });
+  }
+
+  return valid;
+}
+
+/* ===================================================
+   PAYMENT MODAL  (FIXED — dynamic currency)
+   =================================================== */
+function openPayModal() {
+  // Auth gate
+  if (!state.isLoggedIn) {
+    openAuthModal('login');
+    toast('Please log in before publishing your ad.', 'info');
+    return;
+  }
+
+  // Validate form first
+  if (!validateAdForm()) return;
+
+  const price = parseFloat(document.getElementById('adPrice').value) || 0;
+  const fee   = price * state.feePercent;
+  const sym   = state.currency.symbol;
+  const cur   = state.currency.label;
+
+  document.getElementById('modalAdValue').textContent = sym + price.toFixed(2) + ' (' + cur + ')';
+  document.getElementById('modalFee').textContent     = sym + fee.toFixed(2);
+  document.getElementById('modalTotal').textContent   = sym + fee.toFixed(2);
+  document.getElementById('payModal').classList.remove('hidden');
+}
+
+function closeModal() {
+  document.getElementById('payModal').classList.add('hidden');
+}
+
+function selectPay(el) {
+  document.querySelectorAll('.pay-method').forEach(e => e.classList.remove('selected'));
+  el.classList.add('selected');
+}
+
+function fmtCard(inp) {
+  inp.value = inp.value.replace(/\D/g, '').replace(/(\d{4})/g, '$1 ').trim();
+}
+
+function processPayment() {
+  // Basic card validation
+  const cardNum = document.querySelector('#payModal input[placeholder="1234 5678 9012 3456"]');
+  const expiry  = document.querySelector('#payModal input[placeholder="MM/YY"]');
+  const cvv     = document.querySelector('#payModal input[placeholder="123"]');
+
+  if (cardNum && cardNum.value.replace(/\s/g, '').length < 16) {
+    toast('Please enter a valid card number.', 'error');
+    return;
+  }
+  if (expiry && expiry.value.length < 5) {
+    toast('Please enter a valid expiry date.', 'error');
+    return;
+  }
+  if (cvv && cvv.value.length < 3) {
+    toast('Please enter your CVV.', 'error');
+    return;
+  }
+
+  closeModal();
+
+  // Advance flow steps
+  const s2 = document.getElementById('fstep2');
+  const s3 = document.getElementById('fstep3');
+  const s4 = document.getElementById('fstep4');
+  if (s2) { s2.classList.remove('active'); s2.classList.add('done'); s2.querySelector('.flow-step-num').textContent = '✓'; }
+  if (s3) { s3.classList.add('done'); s3.querySelector('.flow-step-num').textContent = '✓'; }
+  if (s4) { s4.classList.add('active'); }
+
+  toast('🎉 Payment successful! Your ad is now live.', 'success');
+  setTimeout(() => showPage('advert'), 1800);
+}
+
+/* ===================================================
+   MESSAGE & SOLD MODALS
+   =================================================== */
+function sendMsg() {
+  document.getElementById('msgModal').classList.add('hidden');
+  toast("Message sent to seller! They'll reply via RC Bay.", 'success');
+}
+
+function markSold() {
+  document.getElementById('soldModal').classList.add('hidden');
+  toast('Ad marked as sold and archived.', 'success');
+  setTimeout(() => showPage('account'), 1200);
+}
+
+/* ===================================================
+   ACCOUNT TABS
+   =================================================== */
+function switchAccountTab(navEl, tabId) {
+  document.querySelectorAll('.account-nav-item').forEach(n => n.classList.remove('active'));
+  navEl.classList.add('active');
+  document.querySelectorAll('#page-account .account-section[id]').forEach(s => s.classList.add('hidden'));
+  const tab = document.getElementById(tabId);
+  if (tab) tab.classList.remove('hidden');
+}
+
+/* ===================================================
+   ADMIN TABS
+   =================================================== */
+function switchAdminTab(navEl, tabId) {
+  document.querySelectorAll('.admin-nav-item').forEach(n => n.classList.remove('active'));
+  navEl.classList.add('active');
+  document.querySelectorAll('#page-admin .account-section[id^="atab"]').forEach(s => s.classList.add('hidden'));
+  const tab = document.getElementById(tabId);
+  if (tab) tab.classList.remove('hidden');
+}
+
+/* ===================================================
+   GEOLOCATION & CURRENCY DETECTION  (FIXED)
+   =================================================== */
+function applyCurrency(cc) {
+  const cur = currencyMap[cc] || currencyMap['GB'];
+  state.currency = cur;
+
+  // Update currency pill in header
+  const pill = document.getElementById('currencySymbol');
+  if (pill) pill.textContent = cur.flag + ' ' + cur.label;
+
+  // Update mobile nav currency row
+  const mobCur = document.getElementById('mobileCurrencyLabel');
+  if (mobCur) mobCur.textContent = cur.flag + ' ' + cur.label;
+
+  // Update prices across site
+  applyPrices(cur.key);
+
+  // NEW FIX: Sync the create form's region dropdown
+  const geoSelect = document.getElementById('geoRegion');
+  const geoHint   = document.getElementById('geoDetectedHint');
+  const countryToOption = {
+    GB: 'uk', US: 'us', AU: 'au', CA: 'ca', JP: 'jp',
+    DE: 'eu', FR: 'eu', IT: 'eu', ES: 'eu', NL: 'eu',
+  };
+  if (geoSelect && countryToOption[cc]) {
+    geoSelect.value = countryToOption[cc];
+  }
+  if (geoHint) {
+    const names = { GB: 'United Kingdom', US: 'United States', AU: 'Australia', CA: 'Canada', JP: 'Japan' };
+    geoHint.textContent = `📡 Detected: ${names[cc] || cc} (${cur.label}) — you can override this`;
+  }
+}
+
+function detectGeo() {
+  fetch('https://ipapi.co/json/')
+    .then(r => r.json())
+    .then(data => {
+      const cc = data.country_code || 'GB';
+      applyCurrency(cc);
+    })
+    .catch(() => {
+      applyCurrency('GB'); // Fallback
+    });
+}
+
+/* ===================================================
+   CLOSE MODALS ON OVERLAY CLICK
+   =================================================== */
+function initModalDismiss() {
+  ['payModal', 'msgModal', 'soldModal', 'authModal'].forEach(id => {
+    const el = document.getElementById(id);
+    if (!el) return;
+    el.addEventListener('click', e => {
+      if (e.target === el) {
+        el.classList.add('hidden');
+      }
+    });
+  });
+}
+
+/* ===================================================
+   CURRENCY MANUAL SWITCHER (header pill click)
+   =================================================== */
+function initCurrencyPillClick() {
+  // Cycle through currencies on click for demo purposes
+  const ccList = ['GB', 'US', 'AU', 'CA', 'JP', 'DE'];
+  let idx = 0;
+  const pill = document.getElementById('currencyPill');
+  if (!pill) return;
+  pill.style.cursor = 'pointer';
+  pill.title = 'Click to change currency';
+  pill.addEventListener('click', () => {
+    idx = (idx + 1) % ccList.length;
+    applyCurrency(ccList[idx]);
+    toast(`Currency changed to ${state.currency.label}`, 'info');
+  });
+}
+
+/* ===================================================
+   INIT — runs on page load
+   =================================================== */
+document.addEventListener('DOMContentLoaded', () => {
+  detectGeo();
+  initModalDismiss();
+  initCurrencyPillClick();
+  updateHeaderForAuth();
+});
+</script>
+
+</body>
+</html>
